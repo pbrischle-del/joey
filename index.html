@@ -58,16 +58,15 @@
             text-shadow: 0 0 10px rgba(216, 112, 147, 0.5);
         }
 
-        /* Zentrierte ASCII Art ohne Versatz */
+        /* ASCII-Art Container: Linksbündig für Gitter-Treue, aber als Block zentriert */
         pre.ascii-art {
             font-family: 'Courier New', Courier, monospace;
             font-size: 14px;
             line-height: 1.15;
             margin: 15px auto;
             white-space: pre;
-            display: block;
-            width: fit-content;
-            text-align: center;
+            display: table;
+            text-align: left;
         }
 
         .joey-side pre.ascii-art {
@@ -93,7 +92,7 @@
             letter-spacing: 1px;
         }
 
-        /* ZENTRIERTE INTERAKTIVE SYMBOLE */
+        /* Interaktive Symbole */
         .interactive-symbol {
             font-size: 1.8rem;
             margin: 15px auto;
@@ -112,8 +111,8 @@
         .interactive-text {
             cursor: pointer;
             font-weight: bold;
-            display: inline-block;
-            margin: 10px auto;
+            display: block;
+            margin: 15px auto;
             transition: transform 0.2s ease, color 0.2s ease;
         }
 
@@ -123,7 +122,7 @@
             text-shadow: 0 0 8px #d87093;
         }
 
-        /* Styling der Versteckten Boxen */
+        /* Versteckte Boxen */
         .secret-box {
             display: none;
             margin: 15px auto;
@@ -173,10 +172,8 @@
             <td class="joey-side">
                 <h1>Joey</h1>
                 
-                <!-- EASTER EGG 1: Die Fledermaus -->
                 <div class="interactive-symbol" onclick="toggleSecret('secret-gamer')" title="???">🦇</div>
                 
-                <!-- Versteckte Box 1 (Gamer) -->
                 <div id="secret-gamer" class="secret-box">
                     <strong>[SECRET LEVEL UNLOCKED] 🏆</strong><br><br>
                     Belohnung: +1000 Liebe!<br>
@@ -185,14 +182,14 @@
 
 <pre class="ascii-art">
 Setting the darkness light
-  /^\      /^\
- (   )    (   )
-  \   \  /   /
-   \   \/   /
-    \      /
-     \    /
-      \  /
-       \/
+     /^\     /^\
+    (   )   (   )
+     \   \ /   /
+      \   V   /
+       \     /
+        \   /
+         \ /
+          '
 </pre>
 
                 <p class="message">
@@ -206,33 +203,27 @@ Setting the darkness light
             <td class="olli-side">
                 <h1>Olli</h1>
                 
-                <!-- EASTER EGG 2: Spinnennetz -->
                 <div class="interactive-symbol" onclick="toggleSecret('secret-hacker')" title="???">🕸️</div>
 
-                <!-- Versteckte Box 2 (Hacker) -->
                 <div id="secret-hacker" class="secret-box">
                     <strong>[SYSTEM OVERRIDE]</strong><br><br>
                     > Du hast mein System gehackt.<br>
                     > Error 404: Joey not found anywhere else.
                 </div>
 
-<!-- ASCII-Herz exakt zentriert -->
 <pre class="ascii-art">
- /  \     /  \
-|    |   |    |
- \    \ /    /
-  \    V    /
-   \       /
+  /^\     /^\
+ (   )   (   )
+  \   \ /   /
+   \   V   /
     \     /
      \   /
       \ /
        '
 </pre>
-                <br>
-                <!-- EASTER EGG 3: Interaktiver Button sauber in neuer Zeile unter dem Herz -->
+
                 <div class="interactive-text" onclick="toggleSecret('secret-kuss')" title="Klick mich!">🖤 O & J 🖤</div>
 
-                <!-- Versteckte Box 3 (Kuss-Notiz) -->
                 <div id="secret-kuss" class="secret-box">
                     <strong>[MESSAGE RECEIVED] ☕🖤</strong><br><br>
                     P.S.: Wenn du das hier gefunden hast, schuldest du mir sofort einen Kuss (und deinen nächsten Kaffee)!
