@@ -58,13 +58,15 @@
             text-shadow: 0 0 10px rgba(216, 112, 147, 0.5);
         }
 
+        /* Perfekt monospaced ASCII Art ohne Verzerrung */
         pre.ascii-art {
             font-family: 'Courier New', Courier, monospace;
-            font-size: 13px;
-            line-height: 1.1;
-            margin: 20px auto;
+            font-size: 14px;
+            line-height: 1.15;
+            margin: 15px auto;
             white-space: pre;
             display: inline-block;
+            text-align: left;
         }
 
         .joey-side pre.ascii-art {
@@ -90,13 +92,14 @@
             letter-spacing: 1px;
         }
 
-        /* Interaktive Easter-Egg Elements */
+        /* ZENTRIERTE INTERAKTIVE SYMBOLE */
         .interactive-symbol {
             font-size: 1.8rem;
-            margin: 15px 0;
+            margin: 15px auto;
             cursor: pointer;
             user-select: none;
-            display: inline-block;
+            display: block;
+            width: fit-content;
             transition: transform 0.2s ease, filter 0.2s ease;
         }
 
@@ -108,12 +111,15 @@
         .interactive-text {
             cursor: pointer;
             font-weight: bold;
-            transition: color 0.2s ease;
+            display: inline-block;
+            margin: 5px auto;
+            transition: transform 0.2s ease, color 0.2s ease;
         }
 
         .interactive-text:hover {
             color: #ffffff;
-            text-shadow: 0 0 5px #d87093;
+            transform: scale(1.1);
+            text-shadow: 0 0 8px #d87093;
         }
 
         /* Styling der Versteckten Boxen */
@@ -129,14 +135,12 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
 
-        /* Style für Joeys Secrets */
         .joey-side .secret-box {
             border: 1px dashed #4a0e2e;
             background-color: #ffc0cb;
             color: #2b0017;
         }
 
-        /* Style für Ollis Secrets */
         .olli-side .secret-box {
             border: 1px dashed #d87093;
             background-color: #1a000d;
@@ -168,7 +172,7 @@
             <td class="joey-side">
                 <h1>Joey</h1>
                 
-                <!-- EASTER EGG 1: Die Fledermaus -->
+                <!-- EASTER EGG 1: Die Fledermaus (Zentriert) -->
                 <div class="interactive-symbol" onclick="toggleSecret('secret-gamer')" title="???">🦇</div>
                 
                 <!-- Versteckte Box 1 (Gamer) -->
@@ -201,7 +205,7 @@
             <td class="olli-side">
                 <h1>Olli</h1>
                 
-                <!-- EASTER EGG 2: Spinnennetz -->
+                <!-- EASTER EGG 2: Spinnennetz (Zentriert) -->
                 <div class="interactive-symbol" onclick="toggleSecret('secret-hacker')" title="???">🕸️</div>
 
                 <!-- Versteckte Box 2 (Hacker) -->
@@ -211,11 +215,12 @@
                     > Error 404: Joey not found anywhere else.
                 </div>
 
+<!-- ASCII-Herz perfekt ausgerichtet -->
 <pre class="ascii-art">
      /  \     /  \
     |    |   |    |
      \    \ /    /
-      \  <span class="interactive-text" onclick="toggleSecret('secret-kuss')" title="Klick mich!">🖤O&J🖤</span>  /
+      \    V    /
        \       /
         \     /
          \   /
@@ -223,7 +228,10 @@
            '
 </pre>
 
-                <!-- EASTER EGG 3: ASCII Initialen Klick -->
+                <!-- EASTER EGG 3: Interaktiver Initialen-Button (Sauber unter dem Herz) -->
+                <div class="interactive-text" onclick="toggleSecret('secret-kuss')" title="Klick mich!">🖤 O & J 🖤</div>
+
+                <!-- Versteckte Box 3 (Kuss-Notiz) -->
                 <div id="secret-kuss" class="secret-box">
                     <strong>[MESSAGE RECEIVED] ☕🖤</strong><br><br>
                     P.S.: Wenn du das hier gefunden hast, schuldest du mir sofort einen Kuss (und deinen nächsten Kaffee)!
