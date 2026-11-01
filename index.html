@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Olli & Joey – Für immer</title>
     <style>
-        /* Grundlegendes Styling */
         html, body {
             margin: 0;
             padding: 0;
@@ -15,7 +14,6 @@
             background-color: #000000;
         }
 
-        /* Haupttabelle für das zweigeteilte Layout */
         table.split-layout {
             width: 100%;
             height: 100vh;
@@ -23,9 +21,9 @@
             table-layout: fixed;
         }
 
-        /* Linke Seite (Joey - Rosa / Dustypink) */
+        /* Linke Seite: Joey (Rosa) */
         td.joey-side {
-            background-color: #d87093; /* Altrosa / Gothic Pink */
+            background-color: #d87093;
             color: #1a000d;
             vertical-align: middle;
             text-align: center;
@@ -33,7 +31,7 @@
             box-sizing: border-box;
         }
 
-        /* Rechte Seite (Olli - Schwarz / Gothic Black) */
+        /* Rechte Seite: Olli (Schwarz) */
         td.olli-side {
             background-color: #0d0d0d;
             color: #d87093;
@@ -44,7 +42,6 @@
             border-left: 1px solid #2a0010;
         }
 
-        /* Typografie & Namen */
         h1 {
             font-size: 3.5rem;
             margin: 10px 0;
@@ -61,7 +58,6 @@
             text-shadow: 0 0 10px rgba(216, 112, 147, 0.5);
         }
 
-        /* ASCII-Art Container */
         pre.ascii-art {
             font-family: 'Courier New', Courier, monospace;
             font-size: 13px;
@@ -79,7 +75,6 @@
             color: #d87093;
         }
 
-        /* Textbotschaften */
         p.message {
             font-size: 1.1rem;
             line-height: 1.6;
@@ -95,13 +90,64 @@
             letter-spacing: 1px;
         }
 
-        /* Herz-Symbol in der Mitte */
-        .divider-heart {
+        /* Interaktive Easter-Egg Elements */
+        .interactive-symbol {
             font-size: 1.8rem;
             margin: 15px 0;
+            cursor: pointer;
+            user-select: none;
+            display: inline-block;
+            transition: transform 0.2s ease, filter 0.2s ease;
         }
 
-        /* Responsive Design für Handys */
+        .interactive-symbol:hover {
+            transform: scale(1.35);
+            filter: drop-shadow(0 0 8px #ffb6c1);
+        }
+
+        .interactive-text {
+            cursor: pointer;
+            font-weight: bold;
+            transition: color 0.2s ease;
+        }
+
+        .interactive-text:hover {
+            color: #ffffff;
+            text-shadow: 0 0 5px #d87093;
+        }
+
+        /* Styling der Versteckten Boxen */
+        .secret-box {
+            display: none;
+            margin: 15px auto;
+            padding: 12px 15px;
+            max-width: 380px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            animation: fadeIn 0.4s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        /* Style für Joeys Secrets */
+        .joey-side .secret-box {
+            border: 1px dashed #4a0e2e;
+            background-color: #ffc0cb;
+            color: #2b0017;
+        }
+
+        /* Style für Ollis Secrets */
+        .olli-side .secret-box {
+            border: 1px dashed #d87093;
+            background-color: #1a000d;
+            color: #ffb6c1;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         @media (max-width: 768px) {
             table.split-layout, tr, td {
                 display: block;
@@ -118,11 +164,20 @@
 
     <table class="split-layout">
         <tr>
-            <!-- LINKE SEITE: JOEY (ROSA) -->
+            <!-- LINKE SEITE: JOEY -->
             <td class="joey-side">
                 <h1>Joey</h1>
-                <div class="divider-heart">🖤</div>
                 
+                <!-- EASTER EGG 1: Die Fledermaus -->
+                <div class="interactive-symbol" onclick="toggleSecret('secret-gamer')" title="???">🦇</div>
+                
+                <!-- Versteckte Box 1 (Gamer) -->
+                <div id="secret-gamer" class="secret-box">
+                    <strong>[SECRET LEVEL UNLOCKED] 🏆</strong><br><br>
+                    Belohnung: +1000 Liebe!<br>
+                    Du bist für immer mein liebster Player 2.
+                </div>
+
 <pre class="ascii-art">
    Setting the darkness light
      /^\      /^\
@@ -142,22 +197,37 @@
                 <div class="footer-note">✦ Forever Yours ✦</div>
             </td>
 
-            <!-- RECHTE SEITE: OLLI (SCHWARZ) -->
+            <!-- RECHTE SEITE: OLLI -->
             <td class="olli-side">
                 <h1>Olli</h1>
-                <div class="divider-heart">🕸️</div>
+                
+                <!-- EASTER EGG 2: Spinnennetz -->
+                <div class="interactive-symbol" onclick="toggleSecret('secret-hacker')" title="???">🕸️</div>
+
+                <!-- Versteckte Box 2 (Hacker) -->
+                <div id="secret-hacker" class="secret-box">
+                    <strong>[SYSTEM OVERRIDE]</strong><br><br>
+                    > Du hast mein System gehackt.<br>
+                    > Error 404: Joey not found anywhere else.
+                </div>
 
 <pre class="ascii-art">
      /  \     /  \
     |    |   |    |
      \    \ /    /
-      \  🖤O&J🖤  /
+      \  <span class="interactive-text" onclick="toggleSecret('secret-kuss')" title="Klick mich!">🖤O&J🖤</span>  /
        \       /
         \     /
          \   /
           \ /
            '
 </pre>
+
+                <!-- EASTER EGG 3: ASCII Initialen Klick -->
+                <div id="secret-kuss" class="secret-box">
+                    <strong>[MESSAGE RECEIVED] ☕🖤</strong><br><br>
+                    P.S.: Wenn du das hier gefunden hast, schuldest du mir sofort einen Kuss (und deinen nächsten Kaffee)!
+                </div>
 
                 <p class="message">
                     "Diese Seite steht im Internet wie meine Liebe zu dir: 
@@ -167,6 +237,17 @@
             </td>
         </tr>
     </table>
+
+    <script>
+        function toggleSecret(id) {
+            var box = document.getElementById(id);
+            if (box.style.display === "block") {
+                box.style.display = "none";
+            } else {
+                box.style.display = "block";
+            }
+        }
+    </script>
 
 </body>
 </html>
