@@ -27,7 +27,7 @@
             color: #1a000d;
             vertical-align: middle;
             text-align: center;
-            padding: 40px 20px;
+            padding: 30px 20px;
             box-sizing: border-box;
         }
 
@@ -37,14 +37,14 @@
             color: #d87093;
             vertical-align: middle;
             text-align: center;
-            padding: 40px 20px;
+            padding: 30px 20px;
             box-sizing: border-box;
             border-left: 1px solid #2a0010;
         }
 
         h1 {
-            font-size: 3.5rem;
-            margin: 10px 0;
+            font-size: 3.2rem;
+            margin: 5px 0;
             letter-spacing: 4px;
             text-transform: uppercase;
         }
@@ -58,12 +58,12 @@
             text-shadow: 0 0 10px rgba(216, 112, 147, 0.5);
         }
 
-        /* ASCII-Art Container: Linksbündig für Gitter-Treue, aber als Block zentriert */
+        /* ASCII-Art Container */
         pre.ascii-art {
             font-family: 'Courier New', Courier, monospace;
-            font-size: 14px;
+            font-size: 13px;
             line-height: 1.15;
-            margin: 15px auto;
+            margin: 10px auto;
             white-space: pre;
             display: table;
             text-align: left;
@@ -78,24 +78,17 @@
         }
 
         p.message {
-            font-size: 1.1rem;
-            line-height: 1.6;
+            font-size: 1.05rem;
+            line-height: 1.5;
             max-width: 400px;
-            margin: 20px auto;
+            margin: 15px auto;
             font-style: italic;
-        }
-
-        .footer-note {
-            font-size: 0.85rem;
-            margin-top: 30px;
-            opacity: 0.8;
-            letter-spacing: 1px;
         }
 
         /* Interaktive Symbole */
         .interactive-symbol {
-            font-size: 1.8rem;
-            margin: 15px auto;
+            font-size: 1.7rem;
+            margin: 10px auto;
             cursor: pointer;
             user-select: none;
             display: block;
@@ -112,7 +105,7 @@
             cursor: pointer;
             font-weight: bold;
             display: block;
-            margin: 15px auto;
+            margin: 10px auto;
             transition: transform 0.2s ease, color 0.2s ease;
         }
 
@@ -125,12 +118,12 @@
         /* Versteckte Boxen */
         .secret-box {
             display: none;
-            margin: 15px auto;
-            padding: 12px 15px;
-            max-width: 380px;
+            margin: 10px auto;
+            padding: 10px 14px;
+            max-width: 360px;
             border-radius: 8px;
             font-family: 'Courier New', monospace;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             animation: fadeIn 0.4s ease;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
@@ -147,6 +140,54 @@
             color: #ffb6c1;
         }
 
+        /* MUTMACHER BUTTON & TEXT CONTAINER */
+        .mutmacher-container {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .mutmacher-btn {
+            background-color: #4a0e2e;
+            color: #ffb6c1;
+            border: 1px solid #ffb6c1;
+            padding: 10px 18px;
+            font-family: 'Georgia', serif;
+            font-size: 0.95rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+
+        .mutmacher-btn:hover {
+            background-color: #ffb6c1;
+            color: #1a000d;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 182, 193, 0.4);
+        }
+
+        .mutmacher-text {
+            display: none;
+            margin: 12px auto 0 auto;
+            padding: 12px 16px;
+            max-width: 380px;
+            background-color: rgba(26, 0, 13, 0.85);
+            color: #ffc0cb;
+            border-radius: 10px;
+            font-style: italic;
+            font-size: 0.95rem;
+            line-height: 1.4;
+            border: 1px solid #d87093;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .footer-note {
+            font-size: 0.85rem;
+            margin-top: 20px;
+            opacity: 0.8;
+            letter-spacing: 1px;
+        }
+
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-5px); }
             to { opacity: 1; transform: translateY(0); }
@@ -159,7 +200,7 @@
                 height: auto !important;
             }
             td.joey-side, td.olli-side {
-                padding: 50px 20px;
+                padding: 40px 20px;
             }
         }
     </style>
@@ -196,7 +237,18 @@ Setting the darkness light
                     "Du bist das schönste Licht in meiner Dunkelheit. 
                     Egal wo du bist, dieser Ort gehört nur dir."
                 </p>
+
                 <div class="footer-note">✦ Forever Yours ✦</div>
+
+                <br><br>
+
+                <!-- DER MUTMACHER-KNOPF -->
+                <div class="mutmacher-container">
+                    <button class="mutmacher-btn" onclick="zeigeMutmacher()">
+                        Klick für deinen Mutmacher des Tages ☕✨
+                    </button>
+                    <div id="mutmacher-box" class="mutmacher-text"></div>
+                </div>
             </td>
 
             <!-- RECHTE SEITE: OLLI -->
@@ -233,6 +285,7 @@ Setting the darkness light
                     "Diese Seite steht im Internet wie meine Liebe zu dir: 
                     Dauerhaft, unvergänglich und nur für dich."
                 </p>
+
                 <div class="footer-note">✦ In Love & Darkness ✦</div>
             </td>
         </tr>
@@ -246,6 +299,51 @@ Setting the darkness light
             } else {
                 box.style.display = "block";
             }
+        }
+
+        const sprueche = [
+            "Du musst heute nicht perfekt sein, mein Elfchen. Du bist fantastisch, genau so wie du bist.",
+            "Egal, wie stürmisch es da draußen wird: Dein Souveräner Fels steht felsenfest und hält dir den Rücken frei.",
+            "Erstmal Kaffee. Die Welt kann warten. ☕❣️",
+            "Atme tief durch. Lass die Schultern sinken. Ich liebe dich – genau jetzt in diesem Moment.",
+            "Tippfehler und müde Gedanken sind auf dieser Seite ausdrücklich erwünscht! 🥰",
+            "Kaffee aufbrühen, tief durchatmen, Welt ausschalten. Erstmal ganz in Ruhe ankommen, mein Elfchen. ☕✨",
+            "Dieser Kaffee wurde mit 100 % Liebe und 0 % Erwartungsdruck gebraut. ❣️",
+            "Egal wie matschig der Kopf am Morgen ist – du bist und bleibst mein absoluter Lieblingsmensch.",
+            "Schluck für Schluck weniger Alltagsstress, Schluck für Schluck mehr Geborgenheit. ☕🌿",
+            "Erst der Kaffee, dann die Welt. Und dazwischen passe ich auf dich auf. 🥰",
+            "Du musst heute keine Berge versetzen. Es reicht völlig, wenn du einfach du bist.",
+            "Tippfehler, Wirrwarr im Kopf und müde Sonntage sind in meiner Nähe zu 100 % erlaubt und zutiefst geliebt.",
+            "Atme einmal tief aus. Lass die Schultern sinken. Du musst bei mir niemals perfekt sein. 🌸",
+            "Wenn die Welt da draußen zu laut wird: Dein Safe Space steht felsenfest.",
+            "Vergiss heute nicht: Deine Sensibilität ist keine Schwäche, sondern deine größte Magie. ✨",
+            "Dein Olli steht. Äh, nicht wie DU jetzt wieder denkst: Egal wie stürmisch das Leben wird – ich halte dir den Rücken frei.",
+            "Ich liebe dich nicht nur in deinen strahlenden Momenten, sondern ganz besonders in deinen müden und leisen. ❣️",
+            "Ein kleiner Reminder für zwischendurch: Mein Herz gehört vollkommen dir. J & O 4ever. 💕",
+            "Du bist meine Seelenheimat. Egal wo du gerade bist – im Herzen halte ich dich an der Hand.",
+            "Du bist das Schönste, was meinem Tag passieren kann. Jeden einzelnen Tag aufs Neue.",
+            "Lust auf Kieferbruch? 😏 Nein? Dann wenigstens von hinten durch die Brust ins Auge? Oh man...😉",
+            "Achtung: Das Drücken dieses Buttons schickt dir eine extra dicke Umarmung aus dem Westerwald! 🤗",
+            "Müde Gedanken? Einfach kurz unter die Decke mummeln und Disney+ anmachen. Offizieller Gleitzeit-Baby-Befehl! 🍳",
+            "Wenn du das hier liest: Bitte einmal lächeln. Danke! (Sieht wie immer fantastisch aus!) 😊",
+            "Code gescannt, Liebe empfangen, Tag gerettet. 💻❣️",
+            "Du fehlst mir. Aber die Vorfreude auf unser nächstes Wiedersehen ist noch viel größer. 😘"
+        ];
+
+        let letzterIndex = -1;
+
+        function zeigeMutmacher() {
+            const box = document.getElementById("mutmacher-box");
+            
+            let neuerIndex;
+            do {
+                neuerIndex = Math.floor(Math.random() * sprueche.length);
+            } while (neuerIndex === letzterIndex && sprueche.length > 1);
+            
+            letzterIndex = neuerIndex;
+
+            box.innerText = sprueche[neuerIndex];
+            box.style.display = "block";
         }
     </script>
 
