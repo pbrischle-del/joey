@@ -58,15 +58,16 @@
             text-shadow: 0 0 10px rgba(216, 112, 147, 0.5);
         }
 
-        /* Perfekt monospaced ASCII Art ohne Verzerrung */
+        /* Zentrierte ASCII Art ohne Versatz */
         pre.ascii-art {
             font-family: 'Courier New', Courier, monospace;
             font-size: 14px;
             line-height: 1.15;
             margin: 15px auto;
             white-space: pre;
-            display: inline-block;
-            text-align: left;
+            display: block;
+            width: fit-content;
+            text-align: center;
         }
 
         .joey-side pre.ascii-art {
@@ -112,7 +113,7 @@
             cursor: pointer;
             font-weight: bold;
             display: inline-block;
-            margin: 5px auto;
+            margin: 10px auto;
             transition: transform 0.2s ease, color 0.2s ease;
         }
 
@@ -172,7 +173,7 @@
             <td class="joey-side">
                 <h1>Joey</h1>
                 
-                <!-- EASTER EGG 1: Die Fledermaus (Zentriert) -->
+                <!-- EASTER EGG 1: Die Fledermaus -->
                 <div class="interactive-symbol" onclick="toggleSecret('secret-gamer')" title="???">🦇</div>
                 
                 <!-- Versteckte Box 1 (Gamer) -->
@@ -183,15 +184,15 @@
                 </div>
 
 <pre class="ascii-art">
-   Setting the darkness light
-     /^\      /^\
-    (   )    (   )
-     \   \  /   /
-      \   \/   /
-       \      /
-        \    /
-         \  /
-          \/
+Setting the darkness light
+  /^\      /^\
+ (   )    (   )
+  \   \  /   /
+   \   \/   /
+    \      /
+     \    /
+      \  /
+       \/
 </pre>
 
                 <p class="message">
@@ -205,7 +206,7 @@
             <td class="olli-side">
                 <h1>Olli</h1>
                 
-                <!-- EASTER EGG 2: Spinnennetz (Zentriert) -->
+                <!-- EASTER EGG 2: Spinnennetz -->
                 <div class="interactive-symbol" onclick="toggleSecret('secret-hacker')" title="???">🕸️</div>
 
                 <!-- Versteckte Box 2 (Hacker) -->
@@ -215,20 +216,20 @@
                     > Error 404: Joey not found anywhere else.
                 </div>
 
-<!-- ASCII-Herz perfekt ausgerichtet -->
+<!-- ASCII-Herz exakt zentriert -->
 <pre class="ascii-art">
-     /  \     /  \
-    |    |   |    |
-     \    \ /    /
-      \    V    /
-       \       /
-        \     /
-         \   /
-          \ /
-           '
+ /  \     /  \
+|    |   |    |
+ \    \ /    /
+  \    V    /
+   \       /
+    \     /
+     \   /
+      \ /
+       '
 </pre>
-
-                <!-- EASTER EGG 3: Interaktiver Initialen-Button (Sauber unter dem Herz) -->
+                <br>
+                <!-- EASTER EGG 3: Interaktiver Button sauber in neuer Zeile unter dem Herz -->
                 <div class="interactive-text" onclick="toggleSecret('secret-kuss')" title="Klick mich!">🖤 O & J 🖤</div>
 
                 <!-- Versteckte Box 3 (Kuss-Notiz) -->
