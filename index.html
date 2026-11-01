@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Olli & Joey – Für immer</title>
+    <style>
+        /* Grundlegendes Styling */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Georgia', 'Times New Roman', serif;
+            color: #ffffff;
+            background-color: #000000;
+        }
+
+        /* Haupttabelle für das zweigeteilte Layout */
+        table.split-layout {
+            width: 100%;
+            height: 100vh;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        /* Linke Seite (Joey - Rosa / Dustypink) */
+        td.joey-side {
+            background-color: #d87093; /* Altrosa / Gothic Pink */
+            color: #1a000d;
+            vertical-align: middle;
+            text-align: center;
+            padding: 40px 20px;
+            box-sizing: border-box;
+        }
+
+        /* Rechte Seite (Olli - Schwarz / Gothic Black) */
+        td.olli-side {
+            background-color: #0d0d0d;
+            color: #d87093;
+            vertical-align: middle;
+            text-align: center;
+            padding: 40px 20px;
+            box-sizing: border-box;
+            border-left: 1px solid #2a0010;
+        }
+
+        /* Typografie & Namen */
+        h1 {
+            font-size: 3.5rem;
+            margin: 10px 0;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+
+        .joey-side h1 {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .olli-side h1 {
+            color: #ffb6c1;
+            text-shadow: 0 0 10px rgba(216, 112, 147, 0.5);
+        }
+
+        /* ASCII-Art Container */
+        pre.ascii-art {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 13px;
+            line-height: 1.1;
+            margin: 20px auto;
+            white-space: pre;
+            display: inline-block;
+        }
+
+        .joey-side pre.ascii-art {
+            color: #4a0e2e;
+        }
+
+        .olli-side pre.ascii-art {
+            color: #d87093;
+        }
+
+        /* Textbotschaften */
+        p.message {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            max-width: 400px;
+            margin: 20px auto;
+            font-style: italic;
+        }
+
+        .footer-note {
+            font-size: 0.85rem;
+            margin-top: 30px;
+            opacity: 0.8;
+            letter-spacing: 1px;
+        }
+
+        /* Herz-Symbol in der Mitte */
+        .divider-heart {
+            font-size: 1.8rem;
+            margin: 15px 0;
+        }
+
+        /* Responsive Design für Handys */
+        @media (max-width: 768px) {
+            table.split-layout, tr, td {
+                display: block;
+                width: 100% !important;
+                height: auto !important;
+            }
+            td.joey-side, td.olli-side {
+                padding: 50px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <table class="split-layout">
+        <tr>
+            <!-- LINKE SEITE: JOEY (ROSA) -->
+            <td class="joey-side">
+                <h1>Joey</h1>
+                <div class="divider-heart">🖤</div>
+                
+<pre class="ascii-art">
+   Setting the darkness light
+     /^\      /^\
+    (   )    (   )
+     \   \  /   /
+      \   \/   /
+       \      /
+        \    /
+         \  /
+          \/
+</pre>
+
+                <p class="message">
+                    "Du bist das schönste Licht in meiner Dunkelheit. 
+                    Egal wo du bist, dieser Ort gehört nur dir."
+                </p>
+                <div class="footer-note">✦ Forever Yours ✦</div>
+            </td>
+
+            <!-- RECHTE SEITE: OLLI (SCHWARZ) -->
+            <td class="olli-side">
+                <h1>Olli</h1>
+                <div class="divider-heart">🕸️</div>
+
+<pre class="ascii-art">
+     /  \     /  \
+    |    |   |    |
+     \    \ /    /
+      \  🖤O&J🖤  /
+       \       /
+        \     /
+         \   /
+          \ /
+           '
+</pre>
+
+                <p class="message">
+                    "Diese Seite steht im Internet wie meine Liebe zu dir: 
+                    Dauerhaft, unvergänglich und nur für dich."
+                </p>
+                <div class="footer-note">✦ In Love & Darkness ✦</div>
+            </td>
+        </tr>
+    </table>
+
+</body>
+</html>
