@@ -14,7 +14,7 @@
             background-color: #000000;
         }
 
-        /* Flexbox-Container für dauerhafte 50/50 Teillung */
+        /* Flexbox-Container für dauerhafte 50/50 Teilung */
         .split-container {
             display: flex;
             flex-direction: row;
@@ -65,6 +65,19 @@
         .olli-side h1 {
             color: #ffb6c1;
             text-shadow: 0 0 10px rgba(216, 112, 147, 0.5);
+        }
+
+        /* Interaktiver Buchstabe 'O' in JOEY */
+        .interactive-letter {
+            cursor: pointer;
+            display: inline-block;
+            transition: transform 0.2s ease, color 0.2s ease, text-shadow 0.2s ease;
+        }
+
+        .interactive-letter:hover {
+            color: #ffffff;
+            transform: scale(1.2);
+            text-shadow: 0 0 8px #4a0e2e;
         }
 
         /* ASCII-Art Container */
@@ -149,6 +162,14 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
 
+        .secret-box img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 6px;
+            margin-top: 8px;
+            display: block;
+        }
+
         .joey-side .secret-box {
             border: 1px dashed #4a0e2e;
             background-color: #ffc0cb;
@@ -226,8 +247,15 @@
     <div class="split-container">
         <!-- LINKE SEITE: JOEY -->
         <div class="joey-side">
-            <h1>Joey</h1>
+            <!-- J - O (anklickbar) - E - Y -->
+            <h1>J<span class="interactive-letter" onclick="toggleSecret('secret-sweet')" title="???">O</span>EY</h1>
             
+            <!-- VERSTECKTE BOX: Sweet Dreams -->
+            <div id="secret-sweet" class="secret-box">
+                <strong>Sweet Dreams my Baby 🖤. Have them at night and day.</strong>
+                <img src="sweetdark.jpg" alt="Sweet Dreams">
+            </div>
+
             <div class="interactive-symbol" onclick="toggleSecret('secret-gamer')" title="???">🦇</div>
             
             <div id="secret-gamer" class="secret-box">
@@ -302,19 +330,28 @@ Setting the darkness light
                 ✦ In Love & Darkness <span class="interactive-star" onclick="toggleSecret('secret-ewigkeit')" title="???">✦</span>
             </div>
 
+            <!-- VERSTECKTE BOTSCHAFT MIT BILD SADDARK -->
             <div id="secret-ewigkeit" class="secret-box">
                 "Liebste, selbst wenn ich diese Welt verlassen haben sollte: wir sind mehr, als wir wissen. Mein Herz und Meine Seele werden niemals vergehen. Das Feuer in mir wird alle Zeiten überdauern... ich warte auf Dich, egal wo ich bin. Halte durch, habe Anteil am Leben.. bis wir uns wiedersehen."
+                <img src="saddark.jpg" alt="Für die Ewigkeit">
             </div>
         </div>
     </div>
 
     <script>
         function toggleSecret(id) {
-            var box = document.getElementById(id);
-            if (box.style.display === "block") {
+            var targetBox = document.getElementById(id);
+            var isCurrentlyOpen = (targetBox.style.display === "block");
+
+            // Erst ALLE Versteck-Boxen schließen
+            var allBoxes = document.querySelectorAll('.secret-box');
+            allBoxes.forEach(function(box) {
                 box.style.display = "none";
-            } else {
-                box.style.display = "block";
+            });
+
+            // Wenn die angeklickte Box vorher zu war, jetzt öffnen
+            if (!isCurrentlyOpen) {
+                targetBox.style.display = "block";
             }
         }
 
