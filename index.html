@@ -160,7 +160,7 @@
         }
 
         @keyframes pulseGothOlli {
-            0%, 100% { text-shadow: 0 0 10px #d87093, 0 0 20px #1a000d; }
+            0%, 100% { text-shadow: 0 0 10px #d87093, 0 0 1a000d; }
             50% { text-shadow: 0 0 20px #ffb6c1, 0 0 35px #d87093, 0 0 50px #ffb6c1; }
         }
 
@@ -327,6 +327,55 @@
             font-family: 'Georgia', serif;
             font-style: italic;
             line-height: 1.5;
+        }
+
+        /* DEZENTES RÄTSEL-TEXTFELD FÜR SPELLS / CHEATCODES (Standardmäßig ausgeblendet für Desktop) */
+        .spell-input-container {
+            display: none;
+            margin-top: 12px;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .spell-input {
+            background-color: rgba(0, 0, 0, 0.4);
+            border: 1px dotted #d87093;
+            color: #ffc0cb;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+            padding: 4px 8px;
+            border-radius: 12px;
+            outline: none;
+            width: 140px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .spell-input::placeholder {
+            color: #d87093;
+            opacity: 0.6;
+        }
+
+        .spell-input:focus {
+            border-style: solid;
+            box-shadow: 0 0 8px rgba(216, 112, 147, 0.5);
+            background-color: rgba(26, 0, 13, 0.8);
+            width: 160px;
+        }
+
+        .spell-submit-btn {
+            background: none;
+            border: none;
+            color: #ffb6c1;
+            cursor: pointer;
+            font-size: 0.9rem;
+            padding: 0;
+            transition: transform 0.2s ease;
+        }
+
+        .spell-submit-btn:hover {
+            transform: scale(1.25);
         }
 
         /* MUTMACHER BUTTON CONTAINER */
@@ -565,12 +614,15 @@
                 width: 100%;
                 padding: 50px 20px 60px 20px;
             }
-            /* OLLI-SEITE VERPASSEN WIR EXTRA PADDING UNTEN FÜR DEN SCHWEBENDEN HUB */
             .olli-side {
                 width: 100%;
                 padding: 50px 20px 260px 20px;
                 border-left: none;
                 border-top: 1px solid #2a0010;
+            }
+            /* DAS TEXTFELD NUR IN DER MOBILEN ANSICHT ANZEIGEN */
+            .spell-input-container {
+                display: flex;
             }
             .bottom-controls-wrapper {
                 bottom: 8px;
@@ -699,11 +751,16 @@ Setting the darkness light
                 Dauerhaft, unvergänglich und nur für dich."
             </p>
 
-            <!-- HINWEIS-BOX FÜR DIE CHEAT-CODES -->
+            <!-- HINWEIS-BOX FÜR DIE CHEAT-CODES MIT SUBTILEM EINGABEFELD (NUR MOBIL) -->
             <div id="secret-hint" class="secret-box">
                 <span class="box-close-btn" onclick="closeSingleSecret('secret-hint')">×</span>
                 <strong>[SPELLBOOK UNLOCKED] 🔮✨</strong><br><br>
                 Type in the name of your love... to become alive! 🖤
+                
+                <div class="spell-input-container">
+                    <input type="text" id="spell-field" class="spell-input" placeholder="[ Enter spell... ]" autocomplete="off" onkeydown="checkSpellInput(event)">
+                    <button class="spell-submit-btn" onclick="submitSpellInput()" title="Zauber wirken">✨</button>
+                </div>
             </div>
 
             <div class="footer-note">
@@ -735,7 +792,7 @@ Setting the darkness light
                 <span class="box-close-btn" onclick="closeSingleSecret('secret-kaffee')">×</span>
                 <strong>[ALERT] Schwere systemkritische Warnung! ☕🚨</strong><br><br>
                 Der Koffein-Spiegel von Joey ist gefährlich niedrig.<br>
-                Olli wurde via Satellit informiert und ist auf dem Weg in die Küche!<b> Try it! 😉</b>
+                Olli wurde via Satellit informed und ist auf dem Weg in die Küche!<b> Try it! 😉</b>
             </div>
 
             <div id="secret-vermissen" class="secret-box">
@@ -859,7 +916,7 @@ Setting the darkness light
             }
         }
 
-        // CHEAT-CODES REGISTRIERUNG + TELEGRAM NOTIFIKATION
+        // CHEAT-CODES REGISTRIERUNG (OHNE TELEGRAM-BOT NOTIFIKATION)
         let typedString = "";
         const cheatCodes = {
             "olli": ["🐦‍⬛", "🪶", "🐦‍⬛"],
@@ -869,6 +926,9 @@ Setting the darkness light
         };
 
         window.addEventListener("keydown", function(e) {
+            // Ignoriere Tastaturanschläge, wenn Joey gerade im Textfeld tippt
+            if (document.activeElement && document.activeElement.id === "spell-field") return;
+
             typedString += e.key.toLowerCase();
             if (typedString.length > 10) {
                 typedString = typedString.substring(typedString.length - 10);
@@ -877,11 +937,28 @@ Setting the darkness light
             for (let code in cheatCodes) {
                 if (typedString.endsWith(code)) {
                     triggerParticles(cheatCodes[code]);
-                    sendeTelegramNachricht(`🔮 Joey hat gerade den Cheat-Code "${code.toUpperCase()}" auf der Webseite getippt! 🖤`);
                     typedString = "";
                 }
             }
         });
+
+        // MANUELLES PRÜFEN VOM DISKRETEN TEXTFELD (MOBILE-FREUNDLICH)
+        function submitSpellInput() {
+            const inputField = document.getElementById("spell-field");
+            if (!inputField) return;
+            const val = inputField.value.trim().toLowerCase();
+            
+            if (cheatCodes[val]) {
+                triggerParticles(cheatCodes[val]);
+                inputField.value = "";
+            }
+        }
+
+        function checkSpellInput(event) {
+            if (event.key === "Enter") {
+                submitSpellInput();
+            }
+        }
 
         function triggerParticles(symbolArray) {
             for (let i = 0; i < 25; i++) {
