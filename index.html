@@ -14,7 +14,7 @@
             background-color: #000000;
         }
 
-        /* Flexbox-Container für dauerhafte 50/50 Teilung */
+        /* Flexbox-Container für Standardansicht (Desktop / Tablet) */
         .split-container {
             display: flex;
             flex-direction: row;
@@ -32,7 +32,7 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 20px 10px;
+            padding: 30px 15px;
             box-sizing: border-box;
         }
 
@@ -46,13 +46,13 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 20px 10px;
+            padding: 30px 15px;
             box-sizing: border-box;
             border-left: 1px solid #2a0010;
         }
 
         h1 {
-            font-size: 2.2rem;
+            font-size: 2.5rem;
             margin: 5px 0;
             letter-spacing: 3px;
             text-transform: uppercase;
@@ -83,9 +83,9 @@
         /* ASCII-Art Container */
         pre.ascii-art {
             font-family: 'Courier New', Courier, monospace;
-            font-size: 11px;
-            line-height: 1.1;
-            margin: 6px auto;
+            font-size: 12px;
+            line-height: 1.15;
+            margin: 8px auto;
             white-space: pre;
             display: inline-block;
             text-align: left;
@@ -100,17 +100,17 @@
         }
 
         p.message {
-            font-size: 0.9rem;
+            font-size: 1rem;
             line-height: 1.4;
-            max-width: 280px;
-            margin: 8px auto;
+            max-width: 320px;
+            margin: 10px auto;
             font-style: italic;
         }
 
         /* Interaktive Symbole */
         .interactive-symbol {
-            font-size: 1.5rem;
-            margin: 4px auto;
+            font-size: 1.6rem;
+            margin: 6px auto;
             cursor: pointer;
             user-select: none;
             display: inline-block;
@@ -126,8 +126,8 @@
             cursor: pointer;
             font-weight: bold;
             display: inline-block;
-            margin: 6px auto;
-            font-size: 0.9rem;
+            margin: 8px auto;
+            font-size: 0.95rem;
             transition: transform 0.2s ease, color 0.2s ease;
         }
 
@@ -152,12 +152,12 @@
         /* Versteckte Boxen */
         .secret-box {
             display: none;
-            margin: 8px auto;
-            padding: 8px 12px;
-            max-width: 280px;
+            margin: 10px auto;
+            padding: 10px 14px;
+            max-width: 320px;
             border-radius: 8px;
             font-family: 'Courier New', monospace;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             animation: fadeIn 0.4s ease;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
@@ -190,17 +190,17 @@
 
         /* MUTMACHER BUTTON & TEXT CONTAINER */
         .mutmacher-container {
-            margin-top: 10px;
-            margin-bottom: 5px;
+            margin-top: 15px;
+            margin-bottom: 10px;
         }
 
         .mutmacher-btn {
             background-color: #4a0e2e;
             color: #ffb6c1;
             border: 1px solid #ffb6c1;
-            padding: 8px 14px;
+            padding: 10px 16px;
             font-family: 'Georgia', serif;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             border-radius: 20px;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -216,22 +216,22 @@
 
         .mutmacher-text {
             display: none;
-            margin: 10px auto 0 auto;
-            padding: 10px 12px;
-            max-width: 280px;
+            margin: 12px auto 0 auto;
+            padding: 10px 14px;
+            max-width: 320px;
             background-color: rgba(26, 0, 13, 0.85);
             color: #ffc0cb;
             border-radius: 10px;
             font-style: italic;
-            font-size: 0.85rem;
-            line-height: 1.35;
+            font-size: 0.9rem;
+            line-height: 1.4;
             border: 1px solid #d87093;
             animation: fadeIn 0.4s ease;
         }
 
         .footer-note {
-            font-size: 0.75rem;
-            margin-top: 12px;
+            font-size: 0.8rem;
+            margin-top: 15px;
             opacity: 0.8;
             letter-spacing: 1px;
         }
@@ -240,6 +240,21 @@
             from { opacity: 0; transform: translateY(-5px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
+        /* ANPASSUNG FÜR HANDYS (MOBILE ANSICHT) */
+        @media (max-width: 768px) {
+            .split-container {
+                flex-direction: column; /* Bricht die Hälften untereinander */
+            }
+            .joey-side, .olli-side {
+                width: 100%; /* Jede Seite nutzt die vollen 100% Breite */
+                padding: 50px 20px;
+                border-left: none;
+            }
+            .olli-side {
+                border-top: 1px solid #2a0010; /* Eleganter Trennstrich oben auf dem Handy */
+            }
+        }
     </style>
 </head>
 <body>
@@ -247,12 +262,10 @@
     <div class="split-container">
         <!-- LINKE SEITE: JOEY -->
         <div class="joey-side">
-            <!-- J - O (anklickbar) - E - Y -->
             <h1>J<span class="interactive-letter" onclick="toggleSecret('secret-sweet')" title="???">O</span>EY</h1>
             
-            <!-- VERSTECKTE BOX: Sweet Dreams -->
             <div id="secret-sweet" class="secret-box">
-                <strong>Sweet Dreams my Baby 🖤. Have them at night and day.</strong>
+                <strong>Sweet Dreams my Baby 🖤</strong>
                 <img src="sweetdark.jpg" alt="Sweet Dreams">
             </div>
 
@@ -330,7 +343,6 @@ Setting the darkness light
                 ✦ In Love & Darkness <span class="interactive-star" onclick="toggleSecret('secret-ewigkeit')" title="???">✦</span>
             </div>
 
-            <!-- VERSTECKTE BOTSCHAFT MIT BILD SADDARK -->
             <div id="secret-ewigkeit" class="secret-box">
                 "Liebste, selbst wenn ich diese Welt verlassen haben sollte: wir sind mehr, als wir wissen. Mein Herz und Meine Seele werden niemals vergehen. Das Feuer in mir wird alle Zeiten überdauern... ich warte auf Dich, egal wo ich bin. Halte durch, habe Anteil am Leben.. bis wir uns wiedersehen."
                 <img src="saddark.jpg" alt="Für die Ewigkeit">
@@ -343,13 +355,11 @@ Setting the darkness light
             var targetBox = document.getElementById(id);
             var isCurrentlyOpen = (targetBox.style.display === "block");
 
-            // Erst ALLE Versteck-Boxen schließen
             var allBoxes = document.querySelectorAll('.secret-box');
             allBoxes.forEach(function(box) {
                 box.style.display = "none";
             });
 
-            // Wenn die angeklickte Box vorher zu war, jetzt öffnen
             if (!isCurrentlyOpen) {
                 targetBox.style.display = "block";
             }
