@@ -227,6 +227,7 @@
             line-height: 1.4;
             border: 1px solid #d87093;
             animation: fadeIn 0.4s ease;
+            white-space: pre-line; /* Ermöglicht \n Zeilenumbrüche in den Sprüchen */
         }
 
         .footer-note {
@@ -244,15 +245,15 @@
         /* ANPASSUNG FÜR HANDYS (MOBILE ANSICHT) */
         @media (max-width: 768px) {
             .split-container {
-                flex-direction: column; /* Bricht die Hälften untereinander */
+                flex-direction: column;
             }
             .joey-side, .olli-side {
-                width: 100%; /* Jede Seite nutzt die vollen 100% Breite */
+                width: 100%;
                 padding: 50px 20px;
                 border-left: none;
             }
             .olli-side {
-                border-top: 1px solid #2a0010; /* Eleganter Trennstrich oben auf dem Handy */
+                border-top: 1px solid #2a0010;
             }
         }
     </style>
@@ -436,7 +437,7 @@ Setting the darkness light
             "Auch wenn die Welt draußen in Hektik läuft: Wir genießen unseren Morgen schön in entschleunigter 8-Bit-Ruhe.",
             "Du musst heute keine Redstone-Schaltung bauen – einfach deinen Kaffee genießen und wissen, dass ich dich liebe.",
             "Egal was heute passiert: am Ende liegst du unter der Kuscheldecke im Wohnzimmer 😊!",
-            "Seit tausenden Jahren: nach den Blattläusen kommen die Marienkäfer!! T4k3 C4r3, Dein 🖤lli",
+            "Seit tausenden Jahren: nach den Blattläusen kommen die Marienkäfer!! T4k3 C4r3, \nDein 🖤lli",
             "Erinnere dich in den schlimmsten Momenten an das Auge des Sturms: Du in meinen Armen, die restliche Welt verblasst...🖤"
         ];
 
