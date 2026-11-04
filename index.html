@@ -12,6 +12,80 @@
             font-family: 'Georgia', 'Times New Roman', serif;
             color: #ffffff;
             background-color: #000000;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* NACHTMODUS STERNEN & MOND CONTAINER */
+        #night-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 99;
+            display: none;
+            background: radial-gradient(ellipse at bottom, rgba(27, 39, 53, 0.7) 0%, rgba(9, 10, 15, 0.85) 100%);
+            transition: opacity 0.5s ease;
+        }
+
+        /* DER LEUCHTENDE MOND */
+        .moon {
+            position: absolute;
+            top: 40px;
+            left: 40px;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: #fffdf0;
+            box-shadow: 0 0 20px #fffdf0, 0 0 40px #ffb6c1, 0 0 80px rgba(255, 182, 193, 0.5);
+            opacity: 0.9;
+        }
+
+        /* STERNE FUNKELN ANIMATION */
+        .star-field {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .star {
+            position: absolute;
+            background-color: #ffffff;
+            border-radius: 50%;
+            animation: twinkle var(--duration) infinite ease-in-out;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.3); box-shadow: 0 0 6px #ffffff; }
+        }
+
+        /* NACHTMODUS-BUTTON (Ganz oben rechts) */
+        .night-mode-btn {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            z-index: 100;
+            background-color: rgba(26, 0, 13, 0.85);
+            color: #ffb6c1;
+            border: 1px solid #d87093;
+            padding: 6px 12px;
+            font-family: 'Georgia', serif;
+            font-size: 0.8rem;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+        }
+
+        .night-mode-btn:hover {
+            background-color: #d87093;
+            color: #1a000d;
+            box-shadow: 0 0 10px #ffb6c1;
         }
 
         /* Flexbox-Container für Standardansicht (Desktop / Tablet) */
@@ -32,8 +106,9 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 30px 15px;
+            padding: 40px 15px 140px 15px;
             box-sizing: border-box;
+            transition: background-color 0.5s ease;
         }
 
         /* Rechte Seite: Olli (Schwarz) */
@@ -46,7 +121,7 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 30px 15px;
+            padding: 40px 15px 140px 15px;
             box-sizing: border-box;
             border-left: 1px solid #2a0010;
         }
@@ -56,6 +131,7 @@
             margin: 5px 0;
             letter-spacing: 3px;
             text-transform: uppercase;
+            transition: text-shadow 0.5s ease, color 0.5s ease;
         }
 
         .joey-side h1 {
@@ -65,6 +141,27 @@
         .olli-side h1 {
             color: #ffb6c1;
             text-shadow: 0 0 10px rgba(216, 112, 147, 0.5);
+        }
+
+        /* PULSIERENDES GOTHIC-GLÜHEN FÜR DIE ÜBERSCHRIFTEN IM NACHTMODUS */
+        body.night-active .joey-side h1 {
+            color: #ffffff;
+            animation: pulseGothJoey 2.5s infinite ease-in-out;
+        }
+
+        body.night-active .olli-side h1 {
+            color: #ffb6c1;
+            animation: pulseGothOlli 2.5s infinite ease-in-out;
+        }
+
+        @keyframes pulseGothJoey {
+            0%, 100% { text-shadow: 0 0 10px #4a0e2e, 0 0 20px #d87093; }
+            50% { text-shadow: 0 0 20px #ffffff, 0 0 35px #ffb6c1, 0 0 50px #d87093; }
+        }
+
+        @keyframes pulseGothOlli {
+            0%, 100% { text-shadow: 0 0 10px #d87093, 0 0 20px #1a000d; }
+            50% { text-shadow: 0 0 20px #ffb6c1, 0 0 35px #d87093, 0 0 50px #ffb6c1; }
         }
 
         /* Interaktiver Buchstabe 'O' in JOEY */
@@ -105,6 +202,20 @@
             max-width: 320px;
             margin: 10px auto;
             font-style: italic;
+        }
+
+        /* Interaktives Wort im Text */
+        .interactive-word {
+            cursor: pointer;
+            font-weight: bold;
+            display: inline-block;
+            transition: transform 0.2s ease, color 0.2s ease, text-shadow 0.2s ease;
+        }
+
+        .interactive-word:hover {
+            color: #ffffff;
+            transform: scale(1.1);
+            text-shadow: 0 0 8px #ffb6c1;
         }
 
         /* Interaktive Symbole */
@@ -149,17 +260,39 @@
             filter: drop-shadow(0 0 8px #ffb6c1);
         }
 
-        /* Versteckte Boxen */
+        /* Versteckte Boxen (Popups) */
         .secret-box {
             display: none;
             margin: 10px auto;
-            padding: 10px 14px;
+            padding: 12px 28px 12px 14px;
             max-width: 320px;
             border-radius: 8px;
             font-family: 'Courier New', monospace;
             font-size: 0.85rem;
             animation: fadeIn 0.4s ease;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 101;
+        }
+
+        /* "x"-SCHLIESSEN-BUTTON OBEN RECHTS FÜR POPUP-BOXEN */
+        .box-close-btn {
+            position: absolute;
+            top: 4px;
+            right: 8px;
+            cursor: pointer;
+            font-family: 'Georgia', sans-serif;
+            font-size: 1rem;
+            font-weight: bold;
+            line-height: 1;
+            opacity: 0.6;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            user-select: none;
+        }
+
+        .box-close-btn:hover {
+            opacity: 1;
+            transform: scale(1.2);
         }
 
         .secret-box img {
@@ -176,9 +309,17 @@
             color: #2b0017;
         }
 
+        .joey-side .box-close-btn {
+            color: #2b0017;
+        }
+
         .olli-side .secret-box {
             border: 1px dashed #d87093;
             background-color: #1a000d;
+            color: #ffb6c1;
+        }
+
+        .olli-side .box-close-btn {
             color: #ffb6c1;
         }
 
@@ -188,10 +329,17 @@
             line-height: 1.5;
         }
 
-        /* MUTMACHER BUTTON & TEXT CONTAINER */
+        /* MUTMACHER BUTTON CONTAINER */
         .mutmacher-container {
             margin-top: 15px;
             margin-bottom: 10px;
+        }
+
+        .mutmacher-btn-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
         }
 
         .mutmacher-btn {
@@ -214,6 +362,28 @@
             box-shadow: 0 4px 12px rgba(255, 182, 193, 0.4);
         }
 
+        .mutmacher-clear-btn {
+            background-color: #4a0e2e;
+            color: #ffb6c1;
+            border: 1px solid #ffb6c1;
+            padding: 10px 12px;
+            font-size: 0.9rem;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mutmacher-clear-btn:hover {
+            background-color: #ffb6c1;
+            color: #1a000d;
+            transform: scale(1.15) rotate(15deg);
+            box-shadow: 0 4px 12px rgba(255, 182, 193, 0.4);
+        }
+
         .mutmacher-text {
             display: none;
             margin: 12px auto 0 auto;
@@ -227,7 +397,9 @@
             line-height: 1.4;
             border: 1px solid #d87093;
             animation: fadeIn 0.4s ease;
-            white-space: pre-line; /* Ermöglicht \n Zeilenumbrüche in den Sprüchen */
+            white-space: pre-line;
+            position: relative;
+            z-index: 101;
         }
 
         .footer-note {
@@ -235,6 +407,148 @@
             margin-top: 15px;
             opacity: 0.8;
             letter-spacing: 1px;
+        }
+
+        /* UNTERE CONTAINER-LAYOUT (Ganz unten links) */
+        .bottom-controls-wrapper {
+            position: fixed;
+            bottom: 12px;
+            left: 12px;
+            z-index: 101;
+            display: flex;
+            align-items: flex-end;
+            gap: 10px;
+        }
+
+        /* MESSAGING HUB CONTAINER */
+        .messaging-hub {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 6px;
+            background-color: rgba(13, 0, 7, 0.88);
+            border: 1px solid #d87093;
+            padding: 10px 14px;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+            max-width: 320px;
+        }
+
+        .hub-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 2px;
+        }
+
+        .hub-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #ffb6c1;
+            font-weight: bold;
+            opacity: 0.9;
+        }
+
+        .hub-clear-btn {
+            background: none;
+            border: none;
+            color: #ffb6c1;
+            cursor: pointer;
+            font-size: 0.85rem;
+            padding: 0 2px;
+            transition: transform 0.2s ease, color 0.2s ease;
+            line-height: 1;
+        }
+
+        .hub-clear-btn:hover {
+            color: #ffffff;
+            transform: scale(1.2) rotate(15deg);
+        }
+
+        .hub-notice {
+            font-size: 0.7rem;
+            color: #ffc0cb;
+            opacity: 0.8;
+            font-style: italic;
+            margin-top: -2px;
+            margin-bottom: 4px;
+            line-height: 1.25;
+        }
+
+        .hub-btn-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .bottom-btn {
+            background-color: rgba(26, 0, 13, 0.9);
+            color: #ffb6c1;
+            border: 1px solid #d87093;
+            padding: 6px 12px;
+            font-family: 'Georgia', serif;
+            font-size: 0.75rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            text-align: left;
+        }
+
+        .bottom-btn:hover {
+            background-color: #ffb6c1;
+            color: #1a000d;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(255, 182, 193, 0.3);
+        }
+
+        .messaging-hub .secret-box {
+            margin: 0 0 4px 0;
+            border: 1px dashed #d87093;
+            background-color: rgba(26, 0, 13, 0.95);
+            color: #ffb6c1;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .messaging-hub .box-close-btn {
+            color: #ffb6c1;
+        }
+
+        /* STRESS-ABSAUGER EIGENSTÄNDIGE BOX NEBEN DEM HUB */
+        .standalone-control {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .standalone-control .secret-box {
+            margin-bottom: 8px;
+            border: 1px dashed #d87093;
+            background-color: rgba(26, 0, 13, 0.95);
+            color: #ffb6c1;
+        }
+
+        .standalone-control .box-close-btn {
+            color: #ffb6c1;
+        }
+
+        /* FLIEGENDE PARTICLES FÜR CHEAT-CODES */
+        .particle {
+            position: fixed;
+            bottom: -50px;
+            font-size: 2rem;
+            pointer-events: none;
+            z-index: 1000;
+            animation: flyUp 3s linear forwards;
+        }
+
+        @keyframes flyUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
         }
 
         @keyframes fadeIn {
@@ -249,16 +563,47 @@
             }
             .joey-side, .olli-side {
                 width: 100%;
-                padding: 50px 20px;
+                padding: 50px 20px 160px 20px;
                 border-left: none;
             }
             .olli-side {
                 border-top: 1px solid #2a0010;
             }
+            .bottom-controls-wrapper {
+                bottom: 8px;
+                left: 8px;
+                right: 8px;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+            }
+            .messaging-hub {
+                max-width: none;
+                padding: 8px 10px;
+            }
+            .bottom-btn {
+                font-size: 0.7rem;
+                padding: 5px 8px;
+            }
+            .moon {
+                width: 45px;
+                height: 45px;
+                top: 15px;
+                left: 15px;
+            }
         }
     </style>
 </head>
 <body>
+
+    <!-- NACHTMODUS EFFEKT & STERNENHIMMEL -->
+    <div id="night-overlay">
+        <div class="moon"></div>
+        <div class="star-field" id="star-field"></div>
+    </div>
+
+    <!-- NACHTMODUS BUTTON (Ganz oben rechts) -->
+    <button class="night-mode-btn" onclick="toggleNightMode()">🌙 Nachtmodus auslösen</button>
 
     <div class="split-container">
         <!-- LINKE SEITE: JOEY -->
@@ -266,6 +611,7 @@
             <h1>J<span class="interactive-letter" onclick="toggleSecret('secret-sweet')" title="???">O</span>EY</h1>
             
             <div id="secret-sweet" class="secret-box">
+                <span class="box-close-btn" onclick="closeSingleSecret('secret-sweet')">×</span>
                 <strong>Sweet Dreams my Baby 🖤. Have them at night and day ✨</strong>
                 <img src="sweetdark.jpg" alt="Sweet Dreams">
             </div>
@@ -273,6 +619,7 @@
             <div class="interactive-symbol" onclick="toggleSecret('secret-gamer')" title="???">🦇</div>
             
             <div id="secret-gamer" class="secret-box">
+                <span class="box-close-btn" onclick="closeSingleSecret('secret-gamer')">×</span>
                 <strong>[SECRET LEVEL UNLOCKED] 🏆</strong><br><br>
                 Belohnung: +1000 Liebe!<br>
                 Du bist für immer mein liebster Player 2.
@@ -298,9 +645,14 @@ Setting the darkness light
             <div class="footer-note">✦ Forever Yours ✦</div>
 
             <div class="mutmacher-container">
-                <button class="mutmacher-btn" onclick="zeigeMutmacher()">
-                    Klick für deinen Mutmacher des Tages ☕✨
-                </button>
+                <div class="mutmacher-btn-wrapper">
+                    <button class="mutmacher-btn" onclick="zeigeMutmacher()">
+                        Klick für deinen Mutmacher des Tages ☕✨
+                    </button>
+                    <button class="mutmacher-clear-btn" onclick="schliesseMutmacher()" title="Kasten aufräumen">
+                        🧹
+                    </button>
+                </div>
                 <div id="mutmacher-box" class="mutmacher-text"></div>
             </div>
         </div>
@@ -312,6 +664,7 @@ Setting the darkness light
             <div class="interactive-symbol" onclick="toggleSecret('secret-hacker')" title="???">🕸️</div>
 
             <div id="secret-hacker" class="secret-box">
+                <span class="box-close-btn" onclick="closeSingleSecret('secret-hacker')">×</span>
                 <strong>[SYSTEM OVERRIDE]</strong><br><br>
                 > Du hast mein System gehackt.<br>
                 > Error 404: Joey not found anywhere else.
@@ -331,27 +684,119 @@ Setting the darkness light
             <div class="interactive-text" onclick="toggleSecret('secret-kuss')" title="Klick mich!">🖤 O & J 🖤</div>
 
             <div id="secret-kuss" class="secret-box">
+                <span class="box-close-btn" onclick="closeSingleSecret('secret-kuss')">×</span>
                 <strong>[MESSAGE RECEIVED] ☕🖤</strong><br><br>
                 P.S.: Wenn du das hier gefunden hast, schuldest du mir sofort einen Kuss (und deinen nächsten Kaffee)!
             </div>
 
             <p class="message">
-                "Diese Seite steht im Internet wie meine Liebe zu dir: 
+                "Diese Seite steht im Internet wie meine <span class="interactive-word" onclick="toggleSecret('secret-hint')" title="???">Liebe</span> zu dir: 
                 Dauerhaft, unvergänglich und nur für dich."
             </p>
+
+            <!-- HINWEIS-BOX FÜR DIE CHEAT-CODES -->
+            <div id="secret-hint" class="secret-box">
+                <span class="box-close-btn" onclick="closeSingleSecret('secret-hint')">×</span>
+                <strong>[SPELLBOOK UNLOCKED] 🔮✨</strong><br><br>
+                Type in the name of your love... to become alive! 🖤
+            </div>
 
             <div class="footer-note">
                 ✦ In Love & Darkness <span class="interactive-star" onclick="toggleSecret('secret-ewigkeit')" title="???">✦</span>
             </div>
 
             <div id="secret-ewigkeit" class="secret-box">
+                <span class="box-close-btn" onclick="closeSingleSecret('secret-ewigkeit')">×</span>
                 "Liebste, selbst wenn ich diese Welt verlassen haben sollte: wir sind mehr, als wir wissen. Mein Herz und Meine Seele werden niemals vergehen. Das Feuer in mir wird alle Zeiten überdauern... ich warte auf Dich, egal wo ich bin. Halte durch, habe Anteil am Leben.. bis wir uns wiedersehen."
                 <img src="saddark.jpg" alt="Für die Ewigkeit">
             </div>
         </div>
     </div>
 
+    <!-- UNTERE BUTTONS CONTAINER (Ganz unten links) -->
+    <div class="bottom-controls-wrapper">
+        <!-- INSTANT SIGNAL HUB -->
+        <div class="messaging-hub">
+            <div class="hub-header">
+                <span class="hub-title">✦ Instant Signal Hub ✦</span>
+                <button class="hub-clear-btn" onclick="schliesseHubBoxen()" title="Hub aufräumen">🧹</button>
+            </div>
+            
+            <div class="hub-notice">
+                📡 <em>Satelliten-Direktverbindung zu Ollis Handy: Ein Klick schickt ihm ein lautloses Echtzeit-Signal! ✨</em>
+            </div>
+
+            <div id="secret-kaffee" class="secret-box">
+                <span class="box-close-btn" onclick="closeSingleSecret('secret-kaffee')">×</span>
+                <strong>[ALERT] Schwere systemkritische Warnung! ☕🚨</strong><br><br>
+                Der Koffein-Spiegel von Joey ist gefährlich niedrig.<br>
+                Olli wurde via Satellit informiert und ist auf dem Weg in die Küche!<b> Try it! 😉</b>
+            </div>
+
+            <div id="secret-vermissen" class="secret-box">
+                <span class="box-close-btn" onclick="closeSingleSecret('secret-vermissen')">×</span>
+                <strong>[HERZSCHLAG ÜBERTRAGEN] 🖤✨</strong><br><br>
+                Dein leises Vermissen ist leise durch den Raum geschwebt.<br>
+                Olli hat den Impuls empfangen!
+            </div>
+
+            <div id="secret-mut" class="secret-box">
+                <span class="box-close-btn" onclick="closeSingleSecret('secret-mut')">×</span>
+                <strong>[FELS IN DER BRANDUNG AKTIVIERT] 🛡️✨</strong><br><br>
+                Signal gesendet! Dein Fels hat die Nachricht erhalten und schickt dir sofort stärkende Gedanken!
+            </div>
+
+            <div class="hub-btn-grid">
+                <button class="bottom-btn" onclick="kaffeeNotfallKlick()">☕ NOTFALL: KAFFEE LEER</button>
+                <button class="bottom-btn" onclick="vermissenKlick()">🖤 Leises Vermissen</button>
+                <button class="bottom-btn" onclick="mutKlick()">🛡️ Brauche kurz Mut</button>
+            </div>
+        </div>
+
+        <!-- STRESS-ABSAUGER EIGENSTÄNDIG DANEBEN -->
+        <div class="standalone-control">
+            <div id="secret-stress" class="secret-box">
+                <span class="box-close-btn" onclick="closeSingleSecret('secret-stress')">×</span>
+                <strong>[STRESS-EXORZISMUS RUNNING...] 🧹✨</strong><br><br>
+                Lade alle nervigen Gedanken (& Menschen..) hoch...<br>
+                [100% GELÖSCHT]<br><br>
+                Ergebnis: Du darfst jetzt offiziell die Welt ausblenden und die Decke über den Kopf ziehen.
+            </div>
+
+            <button class="bottom-btn" onclick="toggleSecret('secret-stress')">🧹 Stress-Absauger</button>
+        </div>
+    </div>
+
     <script>
+        // TELEGRAM BOT CONFIGURATION
+        const TELEGRAM_BOT_TOKEN = "9299756470:AAE2Q63QNcNfedSeAhQv36LpX1LZNAfx5hY";
+        const TELEGRAM_CHAT_ID = "1811252429";
+
+        // Telegram-Hilfsfunktion für leisen Nachrichtensand im Hintergrund
+        function sendeTelegramNachricht(text) {
+            if (TELEGRAM_BOT_TOKEN && TELEGRAM_CHAT_ID) {
+                const nachricht = encodeURIComponent(text);
+                const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage?chat_id=${TELEGRAM_CHAT_ID}&text=${nachricht}`;
+                fetch(url).catch(err => console.log("Telegram Benachrichtigung abgefangen:", err));
+            }
+        }
+
+        // Action-Funktionen für die Instant-Messaging Knöpfe
+        function kaffeeNotfallKlick() {
+            toggleSecret('secret-kaffee');
+            sendeTelegramNachricht("☕🚨 NOTFALL: Joey hat einen leeren Kaffee gemeldet! Ab in die Küche!");
+        }
+
+        function vermissenKlick() {
+            toggleSecret('secret-vermissen');
+            sendeTelegramNachricht("🖤 Joey denkt gerade an dich und schickt dir ein leises Vermissen.");
+        }
+
+        function mutKlick() {
+            toggleSecret('secret-mut');
+            sendeTelegramNachricht("🛡️⚡ Joey braucht gerade eine Portion Mut von ihrem Fels. Schick ihr kurz was Liebes!");
+        }
+
         function toggleSecret(id) {
             var targetBox = document.getElementById(id);
             var isCurrentlyOpen = (targetBox.style.display === "block");
@@ -363,6 +808,88 @@ Setting the darkness light
 
             if (!isCurrentlyOpen) {
                 targetBox.style.display = "block";
+            }
+        }
+
+        // Funktion zum Schließen einer einzelnen Popup-Box über das "x"
+        function closeSingleSecret(id) {
+            var targetBox = document.getElementById(id);
+            if (targetBox) {
+                targetBox.style.display = "none";
+            }
+        }
+
+        function schliesseHubBoxen() {
+            var hubBoxes = document.querySelectorAll('.messaging-hub .secret-box');
+            hubBoxes.forEach(function(box) {
+                box.style.display = "none";
+            });
+        }
+
+        // STERNE GENERATOREN ERSTELLEN
+        const starField = document.getElementById('star-field');
+        for (let i = 0; i < 60; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.left = Math.random() * 100 + '%';
+            const size = Math.random() * 3 + 1 + 'px';
+            star.style.width = size;
+            star.style.height = size;
+            star.style.setProperty('--duration', (Math.random() * 3 + 1.5) + 's');
+            starField.appendChild(star);
+        }
+
+        // NACHTMODUS FUNCTION
+        function toggleNightMode() {
+            var overlay = document.getElementById("night-overlay");
+            var body = document.body;
+            
+            if (overlay.style.display === "block") {
+                overlay.style.display = "none";
+                body.classList.remove("night-active");
+            } else {
+                overlay.style.display = "block";
+                body.classList.add("night-active");
+            }
+        }
+
+        // CHEAT-CODES REGISTRIERUNG + TELEGRAM NOTIFIKATION
+        let typedString = "";
+        const cheatCodes = {
+            "olli": ["🐦‍⬛", "🪶", "🐦‍⬛"],
+            "joey": ["🦇", "🦇", "🦇"],
+            "liebe": ["🖤", "💗", "💕", "❤️", "💖"],
+            "love": ["✨", "🌹", "💖", "⭐", "🌟"]
+        };
+
+        window.addEventListener("keydown", function(e) {
+            typedString += e.key.toLowerCase();
+            if (typedString.length > 10) {
+                typedString = typedString.substring(typedString.length - 10);
+            }
+
+            for (let code in cheatCodes) {
+                if (typedString.endsWith(code)) {
+                    triggerParticles(cheatCodes[code]);
+                    sendeTelegramNachricht(`🔮 Joey hat gerade den Cheat-Code "${code.toUpperCase()}" auf der Webseite getippt! 🖤`);
+                    typedString = "";
+                }
+            }
+        });
+
+        function triggerParticles(symbolArray) {
+            for (let i = 0; i < 25; i++) {
+                setTimeout(function() {
+                    const particle = document.createElement("div");
+                    particle.className = "particle";
+                    particle.innerText = symbolArray[Math.floor(Math.random() * symbolArray.length)];
+                    particle.style.left = Math.random() * 90 + 5 + "vw";
+                    particle.style.animationDuration = (Math.random() * 2 + 2) + "s";
+                    document.body.appendChild(particle);
+
+                    setTimeout(() => particle.remove(), 4000);
+                }, i * 100);
             }
         }
 
@@ -408,7 +935,7 @@ Setting the darkness light
             "Du bist mein Zuhause. Wo immer du bist, ist mein Herz auch.",
             "Fehler 404: Stress nicht gefunden. (Falls doch vorhanden: Bitte direkt an deinen Olli umleiten! Geteiltes Leid ist..) 💻",
             "Systemmeldung: Akku schwach? Bitte rechtzeitig extra Kuschel-Zeit anfordern! 🔌❣️",
-            "Knopf gedrückt? Sehr gut! Ein virtueller Stirnkuss wurde hiermit erfolgreich zugestellt. 💋",
+            "Knopf gedrückt? Sehr gut! Ein virtueller Stirnkuss wurde hiermit erfolgreich zugestellt! 💋",
             "Nach aktuellem Forschungsstand bist du zu 100 % das Bezauberndste auf diesem Planeten. 🧪✨",
             "Du + Ich = Ein verdammt starkes Team. Vergiss das heute nicht. 🥰",
             "Sollte der Tag anstrengend werden: Denk dran, wie wir bald wieder zusammen lachen, Serienkuscheln und zocken!",
@@ -453,6 +980,11 @@ Setting the darkness light
             letzterIndex = neuerIndex;
             box.innerText = sprueche[neuerIndex];
             box.style.display = "block";
+        }
+
+        function schliesseMutmacher() {
+            const box = document.getElementById("mutmacher-box");
+            box.style.display = "none";
         }
     </script>
 
