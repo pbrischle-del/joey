@@ -567,24 +567,6 @@
             color: #ffb6c1;
         }
 
-        /* STRESS-ABSAUGER EIGENSTÄNDIGE BOX NEBEN DEM HUB */
-        .standalone-control {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-        }
-
-        .standalone-control .secret-box {
-            margin-bottom: 8px;
-            border: 1px dashed #d87093;
-            background-color: rgba(26, 0, 13, 0.95);
-            color: #ffb6c1;
-        }
-
-        .standalone-control .box-close-btn {
-            color: #ffb6c1;
-        }
-
         /* FLIEGENDE PARTICLES FÜR CHEAT-CODES */
         .particle {
             position: fixed;
@@ -814,19 +796,6 @@ Setting the darkness light
                 <button class="bottom-btn" onclick="mutKlick()">🛡️ Brauche kurz Mut</button>
             </div>
         </div>
-
-        <!-- STRESS-ABSAUGER EIGENSTÄNDIG DANEBEN -->
-        <div class="standalone-control">
-            <div id="secret-stress" class="secret-box">
-                <span class="box-close-btn" onclick="closeSingleSecret('secret-stress')">×</span>
-                <strong>[STRESS-EXORZISMUS RUNNING...] 🧹✨</strong><br><br>
-                Lade alle nervigen Gedanken (& Menschen..) hoch...<br>
-                [100% GELÖSCHT]<br><br>
-                Ergebnis: Du darfst jetzt offiziell die Welt ausblenden und die Decke über den Kopf ziehen.
-            </div>
-
-            <button class="bottom-btn" onclick="toggleSecret('secret-stress')">🧹 Stress-Absauger</button>
-        </div>
     </div>
 
     <script>
@@ -976,6 +945,7 @@ Setting the darkness light
         }
 
         const sprueche = [
+            "🧹 Stress-Exorzismus gestartet...\nLade alle nervigen Gedanken (& Menschen) hoch... [100% GELÖSCHT]\n\nErgebnis: Du darfst jetzt offiziell die Welt ausblenden und die Decke über den Kopf ziehen! ✨",
             "Du musst heute nicht perfekt sein, mein Elfchen. Du bist fantastisch, genau so wie du bist.",
             "Egal, wie stürmisch es da draußen wird: Dein Souveräner Fels steht felsenfest und hält dir den Rücken frei.",
             "Erstmal Kaffee. Die Welt kann warten. ☕❣️",
