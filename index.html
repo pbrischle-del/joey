@@ -561,12 +561,15 @@
             .split-container {
                 flex-direction: column;
             }
-            .joey-side, .olli-side {
+            .joey-side {
                 width: 100%;
-                padding: 50px 20px 160px 20px;
-                border-left: none;
+                padding: 50px 20px 60px 20px;
             }
+            /* OLLI-SEITE VERPASSEN WIR EXTRA PADDING UNTEN FÜR DEN SCHWEBENDEN HUB */
             .olli-side {
+                width: 100%;
+                padding: 50px 20px 260px 20px;
+                border-left: none;
                 border-top: 1px solid #2a0010;
             }
             .bottom-controls-wrapper {
@@ -580,6 +583,8 @@
             .messaging-hub {
                 max-width: none;
                 padding: 8px 10px;
+                max-height: 50vh;
+                overflow-y: auto;
             }
             .bottom-btn {
                 font-size: 0.7rem;
