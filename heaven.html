@@ -19,14 +19,35 @@
             overflow-x: hidden;
         }
 
+        /* WARMES GOLDENES LICHT-OVERLAY BEIM RITUAL */
+        #golden-aura {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 15;
+            opacity: 0;
+            background: radial-gradient(circle at center,
+                rgba(255, 250, 224, 0.72) 0%,
+                rgba(255, 215, 140, 0.45) 45%,
+                rgba(216, 112, 147, 0.25) 100%);
+            transition: opacity 0.9s ease;
+        }
+
+        body.ritual-active #golden-aura {
+            opacity: 1;
+        }
+
         /* ÜBERSCHRIFT OBEN MITTIG ÜBER BEIDEN SEITEN */
         .page-header {
             position: absolute;
-            top: 25px;
+            top: 22px;
             left: 0;
             width: 100%;
             text-align: center;
-            z-index: 10;
+            z-index: 18;
             pointer-events: none;
             padding: 0 15px;
             box-sizing: border-box;
@@ -42,15 +63,22 @@
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.95),
                          0 0 22px rgba(216, 112, 147, 0.85),
                          0 2px 6px rgba(43, 30, 22, 0.55);
+            transition: text-shadow 0.8s ease;
+        }
+
+        body.ritual-active .heaven-title {
+            text-shadow: 0 0 18px #ffffff,
+                         0 0 35px #ffd700,
+                         0 0 55px rgba(255, 182, 193, 0.95);
         }
 
         /* ZURÜCK-BUTTON UNTEN MITTIG */
         .return-btn-wrapper {
             position: fixed;
-            bottom: 22px;
+            bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            z-index: 20;
+            z-index: 25;
         }
 
         .heaven-return-btn {
@@ -62,7 +90,7 @@
             background-color: rgba(26, 0, 13, 0.78);
             color: #fffdf7;
             border: 1px solid rgba(255, 253, 247, 0.7);
-            padding: 9px 18px 7px 18px;
+            padding: 8px 18px 6px 18px;
             border-radius: 22px;
             font-family: 'Georgia', serif;
             font-size: 0.85rem;
@@ -110,7 +138,7 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 110px 15px 95px 15px;
+            padding: 110px 30px 110px 30px;
             box-sizing: border-box;
         }
 
@@ -124,15 +152,162 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 110px 15px 95px 15px;
+            padding: 110px 30px 110px 30px;
             box-sizing: border-box;
             border-left: 1px solid rgba(216, 112, 147, 0.4);
+        }
+
+        .side-content {
+            max-width: 310px;
+            z-index: 12;
+        }
+
+        .side-label {
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            opacity: 0.75;
+            margin-bottom: 10px;
+        }
+
+        .side-quote {
+            font-size: 1.02rem;
+            line-height: 1.65;
+            font-style: italic;
+            margin: 0;
+        }
+
+        .joey-side .side-quote {
+            color: #2b0017;
+        }
+
+        .olli-side .side-quote {
+            color: #3d281c;
+        }
+
+        /* ZENTRALES LICHT-RITUAL IN DER MITTE */
+        .ritual-center-wrapper {
+            position: fixed;
+            top: 52%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 22;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            width: 90%;
+            max-width: 380px;
+            pointer-events: none;
+        }
+
+        .light-orb-btn {
+            pointer-events: auto;
+            width: 96px;
+            height: 96px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 253, 247, 0.9);
+            background: radial-gradient(circle, #ffffff 0%, #fff4d2 45%, rgba(255, 192, 203, 0.85) 100%);
+            box-shadow: 0 0 22px rgba(255, 255, 255, 0.9),
+                        0 0 42px rgba(255, 215, 130, 0.75),
+                        0 6px 18px rgba(43, 30, 22, 0.25);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: none;
+            animation: gentleFloat 3.5s infinite ease-in-out;
+            transition: transform 0.6s ease, box-shadow 0.6s ease;
+        }
+
+        .light-orb-btn:hover {
+            box-shadow: 0 0 30px #ffffff,
+                        0 0 55px rgba(255, 215, 0, 0.9),
+                        0 6px 20px rgba(43, 30, 22, 0.3);
+        }
+
+        body.ritual-active .light-orb-btn {
+            animation: breatheOrb 6s infinite ease-in-out;
+            box-shadow: 0 0 40px #ffffff,
+                        0 0 80px #ffd700,
+                        0 0 120px rgba(255, 182, 193, 0.95);
+        }
+
+        @keyframes gentleFloat {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-6px) scale(1.04); }
+        }
+
+        @keyframes breatheOrb {
+            0%, 100% { transform: scale(1.05); }
+            50% { transform: scale(1.38); }
+        }
+
+        .ritual-hint {
+            margin-top: 14px;
+            font-size: 0.85rem;
+            font-style: italic;
+            color: #fffdf7;
+            background-color: rgba(26, 0, 13, 0.68);
+            padding: 6px 14px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 253, 247, 0.45);
+            backdrop-filter: blur(4px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+            transition: all 0.4s ease;
+        }
+
+        .ritual-message-card {
+            margin-top: 14px;
+            padding: 14px 18px;
+            background-color: rgba(255, 253, 247, 0.93);
+            color: #2b1e16;
+            border: 1px solid #d87093;
+            border-radius: 16px;
+            font-size: 0.92rem;
+            line-height: 1.5;
+            font-style: italic;
+            box-shadow: 0 6px 24px rgba(43, 30, 22, 0.22), 0 0 20px rgba(255, 255, 255, 0.8);
+            display: none;
+            animation: fadeIn 0.5s ease;
+            pointer-events: auto;
+        }
+
+        /* AUFSTEIGENDE LICHTFUNKEN & FEDERN */
+        .light-spark {
+            position: fixed;
+            bottom: -30px;
+            pointer-events: none;
+            z-index: 20;
+            animation: riseUp 4s ease-out forwards;
+        }
+
+        @keyframes riseUp {
+            0% {
+                transform: translateY(0) scale(0.7) rotate(0deg);
+                opacity: 0;
+            }
+            20% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-108vh) scale(1.2) rotate(25deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* ANPASSUNG FÜR HANDYS (MOBILE ANSICHT) */
         @media (max-width: 768px) {
             .heaven-title {
-                font-size: 2.7rem;
+                font-size: 2.6rem;
             }
             .split-container {
                 flex-direction: column;
@@ -140,38 +315,71 @@
             .joey-side {
                 width: 100%;
                 min-height: 50vh;
-                padding: 100px 20px 40px 20px;
+                padding: 95px 22px 115px 22px;
             }
             .olli-side {
                 width: 100%;
                 min-height: 50vh;
-                padding: 40px 20px 95px 20px;
+                padding: 115px 22px 105px 22px;
                 border-left: none;
                 border-top: 1px solid rgba(216, 112, 147, 0.4);
             }
+            .ritual-center-wrapper {
+                top: 50%;
+            }
+            .light-orb-btn {
+                width: 82px;
+                height: 82px;
+                font-size: 1.9rem;
+            }
+            .side-quote {
+                font-size: 0.95rem;
+            }
             .heaven-return-btn {
                 font-size: 0.8rem;
-                padding: 8px 15px 6px 15px;
+                padding: 7px 15px 6px 15px;
             }
         }
     </style>
 </head>
 <body>
 
+    <!-- WARMES GOLDENES LICHT-OVERLAY -->
+    <div id="golden-aura"></div>
+
     <header class="page-header">
         <h1 class="heaven-title">✦ Heavenly Ascension ✦</h1>
     </header>
 
     <div class="split-container">
-        <!-- LINKE SEITE (ROSA) -->
+        <!-- LINKE SEITE (ROSA – JOEY) -->
         <div class="joey-side">
-            <!-- Platz für Inhalte -->
+            <div class="side-content">
+                <div class="side-label">✦ Dein Licht ✦</div>
+                <p class="side-quote">
+                    „Du bringst Wärme an Orte, die vorher dunkel waren. 
+                    Hier oben musst du nichts tragen, nichts erklären und niemandem gerecht werden – nur du selbst sein.“
+                </p>
+            </div>
         </div>
 
-        <!-- RECHTE SEITE (BEIGE) -->
+        <!-- RECHTE SEITE (BEIGE – OLLI) -->
         <div class="olli-side">
-            <!-- Platz für Inhalte -->
+            <div class="side-content">
+                <div class="side-label">✦ Unser Anker ✦</div>
+                <p class="side-quote">
+                    „Seit jenem Juli-Morgen schlägt mein Herz im Gleichklang mit deinem. 
+                    Egal wie laut die Welt unten wird: Meine Hand hält deine fest.“
+                </p>
+            </div>
         </div>
+    </div>
+
+    <!-- ZENTRALES LICHT-RITUAL -->
+    <div class="ritual-center-wrapper">
+        <div class="light-orb-btn" id="light-orb" title="Halte das Licht gedrückt">🕊️</div>
+        <div class="ritual-hint" id="ritual-hint">Halte das Licht gedrückt für einen ruhigen Atemzug ✨</div>
+        <div class="ritual-message-card" id="ritual-card"></div>
     </div>
 
     <div class="return-btn-wrapper">
@@ -180,6 +388,96 @@
             <span class="arrow">↓</span>
         </a>
     </div>
+
+    <script>
+        const orb = document.getElementById("light-orb");
+        const hint = document.getElementById("ritual-hint");
+        const card = document.getElementById("ritual-card");
+
+        let isHolding = false;
+        let sparkInterval = null;
+        let breathInterval = null;
+        let holdStartTime = 0;
+
+        const lichtBotschaften = [
+            "✨ Du bist geliebt, genau so wie du bist – unperfekt, sensibel, wundervoll und einzigartig.",
+            "🤍 Atme alle Schwere aus. Dein Fels hält dir den Rücken frei, heute und an jedem Tag.",
+            "🕊️ Egal wie stürmisch der Alltag ist: In meinen Armen hast du immer deinen sicheren Hafen.",
+            "☀️ Dein Lächeln ist mein hellster Ort auf dieser Welt. Danke, dass es dich gibt, mein Elfchen.",
+            "💕 J & O – zwei Seelen, die sich gefunden haben, um gemeinsam heller zu leuchten.",
+            "🌸 Nimm dir diese Ruhe mit in deinen Tag. Du schaffst alles, Schritt für Schritt, und bist niemals allein."
+        ];
+
+        let letzterSpruchIndex = -1;
+
+        function spawnLightSpark() {
+            const sym = ["✨", "🤍", "🕊️", "⭐", "🌟"];
+            const spark = document.createElement("div");
+            spark.className = "light-spark";
+            spark.innerText = sym[Math.floor(Math.random() * sym.length)];
+            spark.style.left = (Math.random() * 88 + 6) + "vw";
+            spark.style.fontSize = (Math.random() * 0.9 + 1.1) + "rem";
+            spark.style.animationDuration = (Math.random() * 2 + 3) + "s";
+            document.body.appendChild(spark);
+
+            setTimeout(() => spark.remove(), 5000);
+        }
+
+        function startRitual(e) {
+            if (e.type === "touchstart") e.preventDefault();
+            if (isHolding) return;
+
+            isHolding = true;
+            holdStartTime = Date.now();
+            document.body.classList.add("ritual-active");
+            card.style.display = "none";
+
+            // Atem-Anleitung starten
+            let einatmen = true;
+            hint.innerText = "✨ Atme tief ein... lass alles los...";
+            breathInterval = setInterval(() => {
+                einatmen = !einatmen;
+                hint.innerText = einatmen
+                    ? "✨ Atme tief ein... lass alles los..."
+                    : "🤍 Atme sanft aus... ich halte dich...";
+            }, 3000);
+
+            // Aufsteigende Lichtfunken starten
+            spawnLightSpark();
+            sparkInterval = setInterval(spawnLightSpark, 260);
+        }
+
+        function endRitual() {
+            if (!isHolding) return;
+            isHolding = false;
+
+            document.body.classList.remove("ritual-active");
+            clearInterval(sparkInterval);
+            clearInterval(breathInterval);
+
+            const dauer = Date.now() - holdStartTime;
+            hint.innerText = "Halte das Licht gedrückt für einen ruhigen Atemzug ✨";
+
+            // Wenn mindestens kurz gehalten wurde (ab 0,5 Sek.), eine Lichtbotschaft zeigen
+            if (dauer >= 500) {
+                let neuerIndex;
+                do {
+                    neuerIndex = Math.floor(Math.random() * lichtBotschaften.length);
+                } while (neuerIndex === letzterSpruchIndex && lichtBotschaften.length > 1);
+
+                letzterSpruchIndex = neuerIndex;
+                card.innerText = lichtBotschaften[neuerIndex];
+                card.style.display = "block";
+            }
+        }
+
+        orb.addEventListener("mousedown", startRitual);
+        window.addEventListener("mouseup", endRitual);
+
+        orb.addEventListener("touchstart", startRitual, { passive: false });
+        window.addEventListener("touchend", endRitual);
+        window.addEventListener("touchcancel", endRitual);
+    </script>
 
 </body>
 </html>
