@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Olli & Joey – Deepest Darkness</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            font-family: 'Georgia', 'Times New Roman', serif;
+            color: #ffffff;
+            background-color: #0d0d0d;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* ÜBERSCHRIFT OBEN MITTIG ÜBER BEIDEN SEITEN */
+        .page-header {
+            position: absolute;
+            top: 25px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            z-index: 10;
+            pointer-events: none;
+            padding: 0 15px;
+            box-sizing: border-box;
+        }
+
+        .darkness-title {
+            font-family: 'Creepster', cursive;
+            font-size: 3.3rem;
+            font-weight: normal;
+            margin: 0;
+            letter-spacing: 4px;
+            color: #1a000d;
+            -webkit-text-stroke: 1px #ffb6c1;
+            text-shadow: 0 0 12px #d87093,
+                         0 0 25px #8b0000,
+                         3px 3px 6px #000000;
+        }
+
+        /* ZURÜCK-BUTTON UNTEN MITTIG */
+        .return-btn-wrapper {
+            position: fixed;
+            bottom: 22px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 20;
+        }
+
+        .darkness-return-btn {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            text-decoration: none;
+            background-color: rgba(13, 0, 7, 0.88);
+            color: #ffb6c1;
+            border: 1px solid #d87093;
+            padding: 7px 18px 9px 18px;
+            border-radius: 22px;
+            font-family: 'Georgia', serif;
+            font-size: 0.85rem;
+            font-style: italic;
+            letter-spacing: 0.5px;
+            box-shadow: 0 0 15px rgba(139, 0, 0, 0.55), 0 4px 12px rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .darkness-return-btn .arrow {
+            font-size: 1.1rem;
+            font-style: normal;
+            line-height: 1;
+            transition: transform 0.3s ease;
+        }
+
+        .darkness-return-btn:hover {
+            background-color: #2a0010;
+            color: #ffffff;
+            border-color: #ffb6c1;
+            box-shadow: 0 0 20px rgba(216, 112, 147, 0.8);
+            transform: translateY(-3px);
+        }
+
+        .darkness-return-btn:hover .arrow {
+            transform: translateY(-3px);
+        }
+
+        /* Flexbox-Container für Standardansicht (Desktop / Tablet) */
+        .split-container {
+            display: flex;
+            flex-direction: row;
+            min-height: 100vh;
+            width: 100%;
+        }
+
+        /* Linke Seite: Schwarz */
+        .joey-side {
+            background-color: #0d0d0d;
+            color: #ffb6c1;
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 110px 15px 95px 15px;
+            box-sizing: border-box;
+        }
+
+        /* Rechte Seite: Dunkelgrau */
+        .olli-side {
+            background-color: #222226;
+            color: #d87093;
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 110px 15px 95px 15px;
+            box-sizing: border-box;
+            border-left: 1px solid #38383e;
+        }
+
+        /* ANPASSUNG FÜR HANDYS (MOBILE ANSICHT) */
+        @media (max-width: 768px) {
+            .darkness-title {
+                font-size: 2.4rem;
+                letter-spacing: 2px;
+            }
+            .split-container {
+                flex-direction: column;
+            }
+            .joey-side {
+                width: 100%;
+                min-height: 50vh;
+                padding: 100px 20px 40px 20px;
+            }
+            .olli-side {
+                width: 100%;
+                min-height: 50vh;
+                padding: 40px 20px 95px 20px;
+                border-left: none;
+                border-top: 1px solid #38383e;
+            }
+            .darkness-return-btn {
+                font-size: 0.8rem;
+                padding: 6px 15px 8px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="page-header">
+        <h1 class="darkness-title">Deepest Darkness</h1>
+    </header>
+
+    <div class="split-container">
+        <!-- LINKE SEITE (SCHWARZ) -->
+        <div class="joey-side">
+            <!-- Platz für Inhalte -->
+        </div>
+
+        <!-- RECHTE SEITE (DUNKELGRAU) -->
+        <div class="olli-side">
+            <!-- Platz für Inhalte -->
+        </div>
+    </div>
+
+    <div class="return-btn-wrapper">
+        <a href="index.html" class="darkness-return-btn">
+            <span class="arrow">↑</span>
+            <span>Escape from this pit...</span>
+        </a>
+    </div>
+
+</body>
+</html>
