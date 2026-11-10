@@ -30,7 +30,7 @@
             transition: opacity 0.5s ease;
         }
 
-        /* DER LEUCHTENDE MOND */
+        /* DER LEUCHTENDE MOND (JETZT KLICKBAR / LONG-PRESS) */
         .moon {
             position: absolute;
             top: 40px;
@@ -41,6 +41,80 @@
             background: #fffdf0;
             box-shadow: 0 0 20px #fffdf0, 0 0 40px #ffb6c1, 0 0 80px rgba(255, 182, 193, 0.5);
             opacity: 0.9;
+            pointer-events: auto;
+            cursor: pointer;
+            user-select: none;
+            -webkit-user-select: none;
+            transition: transform 0.3s ease, background 1s ease, box-shadow 1s ease;
+            z-index: 102;
+        }
+
+        .moon:active {
+            transform: scale(0.92);
+        }
+
+        /* BLUTMOND EFFEKT */
+        .moon.blood-moon {
+            background: #8b0000;
+            box-shadow: 0 0 25px #ff0000, 0 0 55px #b30000, 0 0 95px rgba(255, 0, 0, 0.75);
+        }
+
+        /* STERNSCHNUPPE */
+        .shooting-star {
+            position: fixed;
+            top: 10%;
+            left: -150px;
+            width: 140px;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, #ffb6c1 50%, #ffffff 100%);
+            border-radius: 50%;
+            box-shadow: 0 0 10px #ffffff, 0 0 20px #ffb6c1;
+            transform: rotate(22deg);
+            z-index: 1000;
+            pointer-events: none;
+            animation: shootAcross 1.3s ease-in forwards;
+        }
+
+        .shooting-star::after {
+            content: '✦';
+            position: absolute;
+            right: -6px;
+            top: -10px;
+            color: #ffffff;
+            font-size: 14px;
+            text-shadow: 0 0 8px #ffffff, 0 0 15px #ffb6c1;
+        }
+
+        @keyframes shootAcross {
+            0% {
+                transform: translate(0, 0) rotate(22deg);
+                opacity: 1;
+            }
+            80% {
+                opacity: 1;
+            }
+            100% {
+                transform: translate(125vw, 45vh) rotate(22deg);
+                opacity: 0;
+            }
+        }
+
+        /* VAMPIR-BANNER BEI BLUTMOND */
+        .bloodmoon-toast {
+            position: fixed;
+            top: 125px;
+            left: 40px;
+            z-index: 1001;
+            background-color: rgba(25, 0, 5, 0.94);
+            color: #ffccd5;
+            border: 1px solid #b30000;
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-family: 'Georgia', serif;
+            font-size: 0.85rem;
+            max-width: 260px;
+            box-shadow: 0 0 20px rgba(179, 0, 0, 0.7);
+            animation: fadeIn 0.4s ease;
         }
 
         /* STERNE FUNKELN ANIMATION */
@@ -62,6 +136,76 @@
         @keyframes twinkle {
             0%, 100% { opacity: 0.2; transform: scale(0.8); }
             50% { opacity: 1; transform: scale(1.3); box-shadow: 0 0 6px #ffffff; }
+        }
+
+        /* BESONDERE PORTAL-STERNE (HEAVEN & DARKNESS) */
+        .portal-star {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            pointer-events: auto;
+            cursor: pointer;
+            user-select: none;
+            -webkit-user-select: none;
+            z-index: 103;
+            transition: transform 0.3s ease;
+        }
+
+        /* Unsichtbare größere Touch-/Klickfläche für leichte Bedienung */
+        .portal-star::after {
+            content: '';
+            position: absolute;
+            top: -14px;
+            left: -14px;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+        }
+
+        .portal-star:active {
+            transform: scale(1.8);
+        }
+
+        /* Linker Stern -> Heaven (dezent außen links, deutlich unterhalb des Mondes) */
+        .heaven-star {
+            top: 34%;
+            left: 6%;
+            animation: pulseHeavenStar 2s infinite ease-in-out;
+        }
+
+        /* Rechter Stern -> Darkness (dezent außen unten rechts) */
+        .darkness-star {
+            top: 84%;
+            left: 91%;
+            animation: pulseDarknessStar 2.2s infinite ease-in-out;
+        }
+
+        @keyframes pulseHeavenStar {
+            0%, 100% {
+                opacity: 0.55;
+                transform: scale(1);
+                box-shadow: 0 0 8px #ffffff, 0 0 16px #fffdf0;
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.55);
+                box-shadow: 0 0 14px #ffffff, 0 0 28px #ffffff, 0 0 40px #ffb6c1;
+            }
+        }
+
+        @keyframes pulseDarknessStar {
+            0%, 100% {
+                opacity: 0.55;
+                transform: scale(1);
+                box-shadow: 0 0 8px #ffffff, 0 0 16px #d87093;
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.55);
+                box-shadow: 0 0 14px #ffffff, 0 0 26px #ffb6c1, 0 0 38px #8b0000;
+            }
         }
 
         /* NACHTMODUS-BUTTON (Ganz oben rechts) */
@@ -160,7 +304,7 @@
         }
 
         @keyframes pulseGothOlli {
-            0%, 100% { text-shadow: 0 0 10px #d87093, 0 0 1a000d; }
+            0%, 100% { text-shadow: 0 0 10px #d87093, 0 0 20px #1a000d; }
             50% { text-shadow: 0 0 20px #ffb6c1, 0 0 35px #d87093, 0 0 50px #ffb6c1; }
         }
 
@@ -215,6 +359,19 @@
         .interactive-word:hover {
             color: #ffffff;
             transform: scale(1.1);
+            text-shadow: 0 0 8px #ffb6c1;
+        }
+
+        /* Interaktives Wort "Love" im Footer */
+        .interactive-love-footer {
+            cursor: pointer;
+            display: inline-block;
+            transition: transform 0.2s ease, color 0.2s ease, text-shadow 0.2s ease;
+        }
+
+        .interactive-love-footer:hover {
+            color: #ffffff;
+            transform: scale(1.15);
             text-shadow: 0 0 8px #ffb6c1;
         }
 
@@ -327,6 +484,15 @@
             font-family: 'Georgia', serif;
             font-style: italic;
             line-height: 1.5;
+        }
+
+        .countdown-timer {
+            margin-top: 8px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: #ffffff;
+            text-shadow: 0 0 6px #d87093;
+            line-height: 1.4;
         }
 
         /* DEZENTES RÄTSEL-TEXTFELD FÜR SPELLS / CHEATCODES (Standardmäßig ausgeblendet für Desktop) */
@@ -481,7 +647,7 @@
             border-radius: 16px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.6);
             backdrop-filter: blur(4px);
-            max-width: 320px;
+            max-width: 340px;
         }
 
         .hub-header {
@@ -598,7 +764,7 @@
             }
             .olli-side {
                 width: 100%;
-                padding: 50px 20px 260px 20px;
+                padding: 50px 20px 270px 20px;
                 border-left: none;
                 border-top: 1px solid #2a0010;
             }
@@ -630,6 +796,21 @@
                 top: 15px;
                 left: 15px;
             }
+            .bloodmoon-toast {
+                top: 70px;
+                left: 15px;
+                max-width: 220px;
+                font-size: 0.8rem;
+            }
+            /* Auf dem Handy: Linker Portal-Stern weiter unten auf Joeys Seite, rechter unten rechts */
+            .heaven-star {
+                top: 24%;
+                left: 88%;
+            }
+            .darkness-star {
+                top: 74%;
+                left: 91%;
+            }
         }
     </style>
 </head>
@@ -637,7 +818,12 @@
 
     <!-- NACHTMODUS EFFEKT & STERNENHIMMEL -->
     <div id="night-overlay">
-        <div class="moon"></div>
+        <div class="moon" id="interactive-moon" title="Halte mich gedrückt..."></div>
+        
+        <!-- ZWEI BESONDERE PORTAL-STERNE (IMMER EINER LINKS, EINER RECHTS) -->
+        <div class="portal-star heaven-star" id="heaven-portal-star" title="✦"></div>
+        <div class="portal-star darkness-star" id="darkness-portal-star" title="✦"></div>
+        
         <div class="star-field" id="star-field"></div>
     </div>
 
@@ -746,7 +932,15 @@ Setting the darkness light
             </div>
 
             <div class="footer-note">
-                ✦ In Love & Darkness <span class="interactive-star" onclick="toggleSecret('secret-ewigkeit')" title="???">✦</span>
+                ✦ In <span class="interactive-love-footer" onclick="toggleLoveCounter()" title="???">Love</span> & Darkness <span class="interactive-star" onclick="toggleSecret('secret-ewigkeit')" title="???">✦</span>
+            </div>
+
+            <!-- VERSTECKTER BEZIEHUNGS-COUNTDOWN -->
+            <div id="secret-countdown" class="secret-box">
+                <span class="box-close-btn" onclick="closeSingleSecret('secret-countdown')">×</span>
+                <strong>[UNSER ZEITSTRAHL] ⏳🖤</strong><br><br>
+                Seit dem Amphi (26.7.2026) um 11:00 Uhr gehören wir zusammen:<br>
+                <div id="love-counter-display" class="countdown-timer">Berechne...</div>
             </div>
 
             <div id="secret-ewigkeit" class="secret-box">
@@ -790,16 +984,23 @@ Setting the darkness light
                 Signal gesendet! Dein Fels hat die Nachricht erhalten und schickt dir sofort stärkende Gedanken!
             </div>
 
+            <div id="secret-koop" class="secret-box">
+                <span class="box-close-btn" onclick="closeSingleSecret('secret-koop')">×</span>
+                <strong>[CO-OP EINLADUNG GESENDET] 🎮🖤</strong><br><br>
+                Player 2 hat den Controller bereit! Olli hat die Anfrage erhalten und macht sich bereit für eure Runde!
+            </div>
+
             <div class="hub-btn-grid">
                 <button class="bottom-btn" onclick="kaffeeNotfallKlick()">☕ NOTFALL: <br>KAFFEE LEER</button>
                 <button class="bottom-btn" onclick="vermissenKlick()">Kopf an Ollis<br> Schulter legen 🫂</button>
                 <button class="bottom-btn" onclick="mutKlick()">🛡️ Brauche kurz Mut</button>
+                <button class="bottom-btn" onclick="koopKlick()">🎮 Koop-Runde?</button>
             </div>
         </div>
     </div>
 
     <script>
-        // TELEGRAM BOT CONFIGURATION (NEUER TOKEN GENERIERT)
+        // TELEGRAM BOT CONFIGURATION
         const TELEGRAM_BOT_TOKEN = "9299756470:AAHVYBpwYeGGTzFuCwnz3j5S_tbPix1cQ0M";
         const TELEGRAM_CHAT_ID = "1811252429";
 
@@ -826,6 +1027,11 @@ Setting the darkness light
         function mutKlick() {
             toggleSecret('secret-mut');
             sendeTelegramNachricht("🛡️⚡ Joey braucht gerade eine Portion Mut von ihrem Fels. Schick ihr kurz was Liebes!");
+        }
+
+        function koopKlick() {
+            toggleSecret('secret-koop');
+            sendeTelegramNachricht("🎮👾 Player 2 fragt an: Lust auf eine Koop-Runde?");
         }
 
         function toggleSecret(id) {
@@ -857,6 +1063,43 @@ Setting the darkness light
             });
         }
 
+        // LIEBES-COUNTDOWN SEIT 26.07.2026 UM 11:00 UHR
+        const startDatum = new Date(2026, 6, 26, 11, 0, 0); // Monat 6 = Juli (0-basiert)
+        let countdownInterval = null;
+
+        function updateLoveCounter() {
+            const jetzt = new Date();
+            let diff = jetzt - startDatum;
+            const display = document.getElementById("love-counter-display");
+            if (!display) return;
+
+            if (diff < 0) {
+                diff = Math.abs(diff);
+                const tage = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const stunden = Math.floor((diff / (1000 * 60 * 60)) % 24);
+                const minuten = Math.floor((diff / 1000 / 60) % 60);
+                const sekunden = Math.floor((diff / 1000) % 60);
+                display.innerHTML = `Noch ${tage} Tage, ${stunden} Std., ${minuten} Min. & ${sekunden} Sek. ✨`;
+            } else {
+                const tage = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const stunden = Math.floor((diff / (1000 * 60 * 60)) % 24);
+                const minuten = Math.floor((diff / 1000 / 60) % 60);
+                const sekunden = Math.floor((diff / 1000) % 60);
+                display.innerHTML = `${tage} Tage, ${stunden} Stunden,<br>${minuten} Minuten & ${sekunden} Sekunden 💕`;
+            }
+        }
+
+        function toggleLoveCounter() {
+            toggleSecret('secret-countdown');
+            const box = document.getElementById('secret-countdown');
+            if (box.style.display === "block") {
+                updateLoveCounter();
+                if (!countdownInterval) {
+                    countdownInterval = setInterval(updateLoveCounter, 1000);
+                }
+            }
+        }
+
         // STERNE GENERATOREN ERSTELLEN
         const starField = document.getElementById('star-field');
         for (let i = 0; i < 60; i++) {
@@ -885,13 +1128,102 @@ Setting the darkness light
             }
         }
 
+        // LANGER KLICK AUF DIE PORTAL-STERNE (LINKS -> HEAVEN.HTML, RECHTS -> DARKNESS.HTML)
+        function setupLongPressNavigation(elementId, targetUrl) {
+            const el = document.getElementById(elementId);
+            if (!el) return;
+            let pressTimer = null;
+
+            function startPress(e) {
+                if (e.type === "touchstart") e.preventDefault();
+                clearTimeout(pressTimer);
+                pressTimer = setTimeout(function() {
+                    window.location.href = targetUrl;
+                }, 700);
+            }
+
+            function cancelPress() {
+                clearTimeout(pressTimer);
+            }
+
+            el.addEventListener("mousedown", startPress);
+            el.addEventListener("mouseup", cancelPress);
+            el.addEventListener("mouseleave", cancelPress);
+            el.addEventListener("touchstart", startPress, { passive: false });
+            el.addEventListener("touchend", cancelPress);
+            el.addEventListener("touchcancel", cancelPress);
+        }
+
+        setupLongPressNavigation("heaven-portal-star", "heaven.html");
+        setupLongPressNavigation("darkness-portal-star", "darkness.html");
+
+        // LANGER KLICK AUF DEN MOND IM NACHTMODUS (BLUTMOND ODER STERNSCHNUPPE)
+        const moonEl = document.getElementById("interactive-moon");
+        let moonPressTimer = null;
+
+        function triggerMoonSecret() {
+            const zufall = Math.random();
+            if (zufall < 0.5) {
+                // Event 1: Blutmond + Vampirzähne
+                moonEl.classList.add("blood-moon");
+                triggerParticles(["🧛‍♂️", "🩸", "🦇", "🥀"]);
+
+                const existingToast = document.querySelector(".bloodmoon-toast");
+                if (existingToast) existingToast.remove();
+
+                const toast = document.createElement("div");
+                toast.className = "bloodmoon-toast";
+                toast.innerHTML = "<strong>🧛‍♂️ Blutmond erwacht...</strong><br>Vorsicht vor spitzen Vampirzähnen – heute Nacht beißt dein Vampir besonders gerne zu! 🩸🖤";
+                document.body.appendChild(toast);
+
+                setTimeout(() => {
+                    moonEl.classList.remove("blood-moon");
+                    toast.remove();
+                }, 6000);
+            } else {
+                // Event 2: Sternschnuppe flitzt quer über den Bildschirm
+                const star = document.createElement("div");
+                star.className = "shooting-star";
+                star.style.top = (Math.random() * 25 + 5) + "%";
+                document.body.appendChild(star);
+
+                setTimeout(() => {
+                    star.remove();
+                }, 1500);
+            }
+        }
+
+        function startMoonPress(e) {
+            if (e.type === "touchstart") e.preventDefault();
+            clearTimeout(moonPressTimer);
+            moonPressTimer = setTimeout(triggerMoonSecret, 700);
+        }
+
+        function cancelMoonPress() {
+            clearTimeout(moonPressTimer);
+        }
+
+        if (moonEl) {
+            moonEl.addEventListener("mousedown", startMoonPress);
+            moonEl.addEventListener("mouseup", cancelMoonPress);
+            moonEl.addEventListener("mouseleave", cancelMoonPress);
+            moonEl.addEventListener("touchstart", startMoonPress, { passive: false });
+            moonEl.addEventListener("touchend", cancelMoonPress);
+            moonEl.addEventListener("touchcancel", cancelMoonPress);
+        }
+
         // CHEAT-CODES REGISTRIERUNG (OHNE TELEGRAM-BOT NOTIFIKATION)
         let typedString = "";
         const cheatCodes = {
             "olli": ["🐦‍⬛", "🪶", "🐦‍⬛"],
             "joey": ["🦇", "🦇", "🦇"],
             "liebe": ["🖤", "💗", "💕", "❤️", "💖"],
-            "love": ["✨", "🌹", "💖", "⭐", "🌟"]
+            "love": ["✨", "🌹", "💖", "⭐", "🌟"],
+            "alva": ["🐴", "🐎", "🧲", "✨"],
+            "marvin": ["⛏️", "💎", "🟩", "🧱", "⚔️"],
+            "familie": ["🦇", "🐦‍⬛", "🐴", "💎", "🖤", "✨"],
+            "wir": ["🦇", "🐦‍⬛", "🐴", "💎", "🖤", "✨"],
+            "kaffee": ["☕", "⚡", "🤎", "✨"]
         };
 
         window.addEventListener("keydown", function(e) {
@@ -899,8 +1231,8 @@ Setting the darkness light
             if (document.activeElement && document.activeElement.id === "spell-field") return;
 
             typedString += e.key.toLowerCase();
-            if (typedString.length > 10) {
-                typedString = typedString.substring(typedString.length - 10);
+            if (typedString.length > 12) {
+                typedString = typedString.substring(typedString.length - 12);
             }
 
             for (let code in cheatCodes) {
