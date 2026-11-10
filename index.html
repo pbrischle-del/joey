@@ -250,7 +250,7 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 40px 15px 140px 15px;
+            padding: 40px 15px 90px 15px;
             box-sizing: border-box;
             transition: background-color 0.5s ease;
         }
@@ -265,7 +265,7 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 40px 15px 140px 15px;
+            padding: 40px 15px 90px 15px;
             box-sizing: border-box;
             border-left: 1px solid #2a0010;
         }
@@ -643,7 +643,7 @@
             pointer-events: none;
         }
 
-        /* MESSAGING HUB CONTAINER */
+        /* MESSAGING HUB CONTAINER (STARTET MINIMIERT) */
         .messaging-hub {
             display: flex;
             flex-direction: column;
@@ -656,6 +656,36 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.6);
             backdrop-filter: blur(4px);
             max-width: 340px;
+            transition: all 0.3s ease;
+        }
+
+        /* Minimierter Zustand: nur die kompakte Leiste unten links */
+        .messaging-hub.minimized {
+            padding: 7px 13px;
+            border-radius: 20px;
+            gap: 0;
+            cursor: pointer;
+        }
+
+        .messaging-hub.minimized:hover {
+            background-color: rgba(42, 0, 20, 0.95);
+            box-shadow: 0 0 12px rgba(255, 182, 193, 0.4);
+        }
+
+        .messaging-hub.minimized .hub-body {
+            display: none;
+        }
+
+        .messaging-hub.minimized .hub-clear-btn {
+            display: none;
+        }
+
+        .hub-body {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            width: 100%;
+            animation: fadeIn 0.25s ease;
         }
 
         .hub-header {
@@ -663,7 +693,10 @@
             justify-content: space-between;
             align-items: center;
             width: 100%;
-            margin-bottom: 2px;
+            gap: 10px;
+            cursor: pointer;
+            user-select: none;
+            -webkit-user-select: none;
         }
 
         .hub-title {
@@ -672,7 +705,19 @@
             letter-spacing: 1.5px;
             color: #ffb6c1;
             font-weight: bold;
-            opacity: 0.9;
+            opacity: 0.95;
+            white-space: nowrap;
+        }
+
+        .hub-toggle-icon {
+            display: inline-block;
+            font-size: 0.7rem;
+            margin-left: 4px;
+            transition: transform 0.25s ease;
+        }
+
+        .messaging-hub:not(.minimized) .hub-toggle-icon {
+            transform: rotate(180deg);
         }
 
         .hub-clear-btn {
@@ -696,7 +741,7 @@
             color: #ffc0cb;
             opacity: 0.8;
             font-style: italic;
-            margin-top: -2px;
+            margin-top: 2px;
             margin-bottom: 4px;
             line-height: 1.25;
         }
@@ -772,7 +817,7 @@
             }
             .olli-side {
                 width: 100%;
-                padding: 50px 20px 270px 20px;
+                padding: 50px 20px 100px 20px;
                 border-left: none;
                 border-top: 1px solid #2a0010;
             }
@@ -781,18 +826,21 @@
                 display: flex;
             }
             .bottom-controls-wrapper {
-                bottom: 8px;
-                left: 8px;
-                right: 8px;
+                bottom: 10px;
+                left: 10px;
+                right: auto;
                 flex-direction: column;
-                align-items: stretch;
+                align-items: flex-start;
                 gap: 8px;
+                max-width: calc(100vw - 20px);
             }
-            .messaging-hub {
+            .messaging-hub:not(.minimized) {
+                width: calc(100vw - 20px);
                 max-width: none;
-                padding: 8px 10px;
-                max-height: 50vh;
+                padding: 10px 12px;
+                max-height: 55vh;
                 overflow-y: auto;
+                box-sizing: border-box;
             }
             .bottom-btn {
                 font-size: 0.7rem;
@@ -959,50 +1007,52 @@ Setting the darkness light
         </div>
     </div>
 
-    <!-- UNTERE BUTTONS CONTAINER (Ganz unten links) -->
+    <!-- UNTERE BUTTONS CONTAINER (Ganz unten links, startet minimiert) -->
     <div class="bottom-controls-wrapper">
         <!-- INSTANT SIGNAL HUB -->
-        <div class="messaging-hub">
-            <div class="hub-header">
-                <span class="hub-title">✦ Instant Signal Hub ✦</span>
-                <button class="hub-clear-btn" onclick="schliesseHubBoxen()" title="Hub aufräumen">🧹</button>
+        <div class="messaging-hub minimized" id="instant-signal-hub">
+            <div class="hub-header" onclick="toggleSignalHub()">
+                <span class="hub-title" id="hub-title-text">Instant Signal Hub.. <span class="hub-toggle-icon">▴</span></span>
+                <button class="hub-clear-btn" onclick="event.stopPropagation(); minimizeSignalHub()" title="Hub minimieren">✕</button>
             </div>
             
-            <div class="hub-notice">
-                📡 <em>Magische-Direktverbindung zu Ollis Handy: Ein Klick schickt ihm ein lautloses Echtzeit-Signal! ✨</em>
-            </div>
+            <div class="hub-body">
+                <div class="hub-notice">
+                    📡 <em>Magische-Direktverbindung zu Ollis Handy: Ein Klick schickt ihm ein lautloses Echtzeit-Signal! ✨</em>
+                </div>
 
-            <div id="secret-kaffee" class="secret-box">
-                <span class="box-close-btn" onclick="closeSingleSecret('secret-kaffee')">×</span>
-                <strong>[ALERT] Schwere systemkritische Warnung! ☕🚨</strong><br><br>
-                Der Koffein-Spiegel von Joey ist gefährlich niedrig.<br>
-                Olli wurde via Satellit informed und ist auf dem Weg in die Küche!<b> Try it! 😉</b>
-            </div>
+                <div id="secret-kaffee" class="secret-box">
+                    <span class="box-close-btn" onclick="closeSingleSecret('secret-kaffee')">×</span>
+                    <strong>[ALERT] Schwere systemkritische Warnung! ☕🚨</strong><br><br>
+                    Der Koffein-Spiegel von Joey ist gefährlich niedrig.<br>
+                    Olli wurde via Satellit informed und ist auf dem Weg in die Küche!<b> Try it! 😉</b>
+                </div>
 
-            <div id="secret-vermissen" class="secret-box">
-                <span class="box-close-btn" onclick="closeSingleSecret('secret-vermissen')">×</span>
-                <strong>[HERZSCHLAG ÜBERTRAGEN] 🖤✨</strong><br><br>
-                Dein Gefühl, den Kopf an Ollis Schulter zu legen, ist sanft durch den Raum geschwebt...<br>
-                Olli hat den Impuls empfangen!
-            </div>
+                <div id="secret-vermissen" class="secret-box">
+                    <span class="box-close-btn" onclick="closeSingleSecret('secret-vermissen')">×</span>
+                    <strong>[HERZSCHLAG ÜBERTRAGEN] 🖤✨</strong><br><br>
+                    Dein Gefühl, den Kopf an Ollis Schulter zu legen, ist sanft durch den Raum geschwebt...<br>
+                    Olli hat den Impuls empfangen!
+                </div>
 
-            <div id="secret-mut" class="secret-box">
-                <span class="box-close-btn" onclick="closeSingleSecret('secret-mut')">×</span>
-                <strong>[FELS IN DER BRANDUNG AKTIVIERT] 🛡️✨</strong><br><br>
-                Signal gesendet! Dein Fels hat die Nachricht erhalten und schickt dir sofort stärkende Gedanken!
-            </div>
+                <div id="secret-mut" class="secret-box">
+                    <span class="box-close-btn" onclick="closeSingleSecret('secret-mut')">×</span>
+                    <strong>[FELS IN DER BRANDUNG AKTIVIERT] 🛡️✨</strong><br><br>
+                    Signal gesendet! Dein Fels hat die Nachricht erhalten und schickt dir sofort stärkende Gedanken!
+                </div>
 
-            <div id="secret-koop" class="secret-box">
-                <span class="box-close-btn" onclick="closeSingleSecret('secret-koop')">×</span>
-                <strong>[CO-OP EINLADUNG GESENDET] 🎮🖤</strong><br><br>
-                Player 2 hat den Controller bereit! Olli hat die Anfrage erhalten und macht sich bereit für eure Runde!
-            </div>
+                <div id="secret-koop" class="secret-box">
+                    <span class="box-close-btn" onclick="closeSingleSecret('secret-koop')">×</span>
+                    <strong>[CO-OP EINLADUNG GESENDET] 🎮🖤</strong><br><br>
+                    Player 2 hat den Controller bereit! Olli hat die Anfrage erhalten und macht sich bereit für eure Runde!
+                </div>
 
-            <div class="hub-btn-grid">
-                <button class="bottom-btn" onclick="kaffeeNotfallKlick()">☕ NOTFALL: <br>KAFFEE LEER</button>
-                <button class="bottom-btn" onclick="vermissenKlick()">Kopf an Ollis<br> Schulter legen 🫂</button>
-                <button class="bottom-btn" onclick="mutKlick()">🛡️ Brauche kurz Mut</button>
-                <button class="bottom-btn" onclick="koopKlick()">🎮 Koop-Runde?</button>
+                <div class="hub-btn-grid">
+                    <button class="bottom-btn" onclick="kaffeeNotfallKlick()">☕ NOTFALL: <br>KAFFEE LEER</button>
+                    <button class="bottom-btn" onclick="vermissenKlick()">Kopf an Ollis<br> Schulter legen 🫂</button>
+                    <button class="bottom-btn" onclick="mutKlick()">🛡️ Brauche kurz Mut</button>
+                    <button class="bottom-btn" onclick="koopKlick()">🎮 Koop-Runde?</button>
+                </div>
             </div>
         </div>
     </div>
@@ -1011,6 +1061,42 @@ Setting the darkness light
         // TELEGRAM BOT CONFIGURATION
         const TELEGRAM_BOT_TOKEN = "9299756470:AAHVYBpwYeGGTzFuCwnz3j5S_tbPix1cQ0M";
         const TELEGRAM_CHAT_ID = "1811252429";
+
+        let hubAutoMinimizeTimer = null;
+
+        // Instant Signal Hub auf- und zuklappen
+        function toggleSignalHub() {
+            const hub = document.getElementById("instant-signal-hub");
+            const titleEl = document.getElementById("hub-title-text");
+            if (!hub) return;
+
+            clearTimeout(hubAutoMinimizeTimer);
+            const isMinimized = hub.classList.toggle("minimized");
+            if (isMinimized) {
+                schliesseHubBoxen();
+                titleEl.innerHTML = 'Instant Signal Hub.. <span class="hub-toggle-icon">▴</span>';
+            } else {
+                titleEl.innerHTML = '✦ Instant Signal Hub ✦ <span class="hub-toggle-icon">▴</span>';
+            }
+        }
+
+        function minimizeSignalHub() {
+            const hub = document.getElementById("instant-signal-hub");
+            const titleEl = document.getElementById("hub-title-text");
+            if (!hub) return;
+
+            clearTimeout(hubAutoMinimizeTimer);
+            schliesseHubBoxen();
+            hub.classList.add("minimized");
+            titleEl.innerHTML = 'Instant Signal Hub.. <span class="hub-toggle-icon">▴</span>';
+        }
+
+        function scheduleHubAutoMinimize() {
+            clearTimeout(hubAutoMinimizeTimer);
+            hubAutoMinimizeTimer = setTimeout(function() {
+                minimizeSignalHub();
+            }, 6000);
+        }
 
         // Telegram-Hilfsfunktion für leisen Nachrichtensand im Hintergrund
         function sendeTelegramNachricht(text) {
@@ -1021,25 +1107,29 @@ Setting the darkness light
             }
         }
 
-        // Action-Funktionen für die Instant-Messaging Knöpfe
+        // Action-Funktionen für die Instant-Messaging Knöpfe (mit 4s Auto-Minimieren)
         function kaffeeNotfallKlick() {
             toggleSecret('secret-kaffee');
             sendeTelegramNachricht("☕🚨 NOTFALL: Joey hat einen leeren Kaffee gemeldet! Ab in die Küche!");
+            scheduleHubAutoMinimize();
         }
 
         function vermissenKlick() {
             toggleSecret('secret-vermissen');
             sendeTelegramNachricht("🖤 Joey denkt gerade an dich und legt den Kopf an deine Schulter.");
+            scheduleHubAutoMinimize();
         }
 
         function mutKlick() {
             toggleSecret('secret-mut');
             sendeTelegramNachricht("🛡️⚡ Joey braucht gerade eine Portion Mut von ihrem Fels. Schick ihr kurz was Liebes!");
+            scheduleHubAutoMinimize();
         }
 
         function koopKlick() {
             toggleSecret('secret-koop');
             sendeTelegramNachricht("🎮👾 Player 2 fragt an: Lust auf eine Koop-Runde?");
+            scheduleHubAutoMinimize();
         }
 
         function toggleSecret(id) {
