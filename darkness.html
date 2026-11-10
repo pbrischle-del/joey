@@ -19,14 +19,41 @@
             overflow-x: hidden;
         }
 
+        /* BEDROHLICHES SCHATTEN- & BLUT-OVERLAY BEIM ABGRUND-RITUAL */
+        #abyss-aura {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 15;
+            opacity: 0;
+            background: radial-gradient(circle at center,
+                rgba(139, 0, 0, 0.55) 0%,
+                rgba(42, 0, 16, 0.78) 50%,
+                rgba(0, 0, 0, 0.94) 100%);
+            transition: opacity 0.6s ease;
+        }
+
+        body.abyss-active #abyss-aura {
+            opacity: 1;
+            animation: sinisterPulse 2.2s infinite ease-in-out;
+        }
+
+        @keyframes sinisterPulse {
+            0%, 100% { filter: brightness(0.9); }
+            50% { filter: brightness(1.35); }
+        }
+
         /* ÜBERSCHRIFT OBEN MITTIG ÜBER BEIDEN SEITEN */
         .page-header {
             position: absolute;
-            top: 25px;
+            top: 22px;
             left: 0;
             width: 100%;
             text-align: center;
-            z-index: 10;
+            z-index: 18;
             pointer-events: none;
             padding: 0 15px;
             box-sizing: border-box;
@@ -43,15 +70,33 @@
             text-shadow: 0 0 12px #d87093,
                          0 0 25px #8b0000,
                          3px 3px 6px #000000;
+            transition: all 0.3s ease;
+        }
+
+        body.abyss-active .darkness-title {
+            color: #ff1a1a;
+            -webkit-text-stroke: 1px #000000;
+            animation: titleFlicker 0.25s infinite alternate;
+        }
+
+        @keyframes titleFlicker {
+            0% {
+                text-shadow: 0 0 15px #ff0000, 0 0 35px #8b0000, -2px 0 2px #ffb6c1;
+                transform: skewX(-2deg);
+            }
+            100% {
+                text-shadow: 0 0 25px #ff0000, 0 0 50px #4a0000, 2px 0 2px #ffffff;
+                transform: skewX(2deg);
+            }
         }
 
         /* ZURÜCK-BUTTON UNTEN MITTIG */
         .return-btn-wrapper {
             position: fixed;
-            bottom: 22px;
+            bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            z-index: 20;
+            z-index: 25;
         }
 
         .darkness-return-btn {
@@ -60,16 +105,16 @@
             align-items: center;
             gap: 4px;
             text-decoration: none;
-            background-color: rgba(13, 0, 7, 0.88);
+            background-color: rgba(13, 0, 7, 0.92);
             color: #ffb6c1;
             border: 1px solid #d87093;
-            padding: 7px 18px 9px 18px;
+            padding: 6px 18px 8px 18px;
             border-radius: 22px;
             font-family: 'Georgia', serif;
             font-size: 0.85rem;
             font-style: italic;
             letter-spacing: 0.5px;
-            box-shadow: 0 0 15px rgba(139, 0, 0, 0.55), 0 4px 12px rgba(0, 0, 0, 0.7);
+            box-shadow: 0 0 15px rgba(139, 0, 0, 0.65), 0 4px 12px rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(4px);
             transition: all 0.3s ease;
             white-space: nowrap;
@@ -112,7 +157,7 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 110px 15px 95px 15px;
+            padding: 110px 30px 110px 30px;
             box-sizing: border-box;
         }
 
@@ -126,15 +171,178 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 110px 15px 95px 15px;
+            padding: 110px 30px 110px 30px;
             box-sizing: border-box;
             border-left: 1px solid #38383e;
+        }
+
+        .side-content {
+            max-width: 310px;
+            z-index: 12;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+
+        .side-label {
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            opacity: 0.65;
+            margin-bottom: 10px;
+            color: #d87093;
+        }
+
+        .side-quote {
+            font-size: 1rem;
+            line-height: 1.65;
+            font-style: italic;
+            margin: 0;
+            color: #e0b0c0;
+        }
+
+        /* GLITCH-VERZERRUNG DER TEXTE BEIM HALTEN */
+        body.abyss-active .side-content {
+            animation: textGlitch 0.35s infinite;
+        }
+
+        @keyframes textGlitch {
+            0% { transform: translate(0, 0) skewX(0deg); text-shadow: -2px 0 #ff0000, 2px 0 #d87093; }
+            25% { transform: translate(-2px, 1px) skewX(-3deg); text-shadow: 2px 0 #ff0000, -2px 0 #ffffff; }
+            50% { transform: translate(2px, -1px) skewX(2deg); text-shadow: -1px 0 #8b0000, 1px 0 #ffb6c1; }
+            75% { transform: translate(-1px, -1px) skewX(-1deg); }
+            100% { transform: translate(0, 0) skewX(0deg); }
+        }
+
+        /* ZENTRALER SCHWARZER ABGRUND (ABYSS MIRROR) */
+        .abyss-center-wrapper {
+            position: fixed;
+            top: 52%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 22;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            width: 90%;
+            max-width: 390px;
+            pointer-events: none;
+        }
+
+        .abyss-orb-btn {
+            pointer-events: auto;
+            width: 98px;
+            height: 98px;
+            border-radius: 50%;
+            border: 2px solid #8b0000;
+            background: radial-gradient(circle, #000000 35%, #1a0005 70%, #590016 100%);
+            box-shadow: 0 0 22px rgba(0, 0, 0, 0.95),
+                        0 0 35px rgba(139, 0, 0, 0.75),
+                        inset 0 0 20px #000000;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: none;
+            animation: abyssVoidPulse 3.2s infinite ease-in-out;
+            transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+        }
+
+        .abyss-orb-btn:hover {
+            border-color: #d87093;
+            box-shadow: 0 0 30px #000000,
+                        0 0 50px rgba(216, 112, 147, 0.8),
+                        inset 0 0 25px #2a000d;
+        }
+
+        body.abyss-active .abyss-orb-btn {
+            border-color: #ff1a1a;
+            animation: abyssDistort 0.4s infinite alternate;
+            box-shadow: 0 0 40px #000000,
+                        0 0 75px #ff0000,
+                        0 0 110px rgba(139, 0, 0, 0.95);
+        }
+
+        @keyframes abyssVoidPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.06); }
+        }
+
+        @keyframes abyssDistort {
+            0% { transform: scale(1.22) rotate(-2deg); }
+            100% { transform: scale(1.32) rotate(2deg); }
+        }
+
+        .abyss-hint {
+            margin-top: 14px;
+            font-size: 0.83rem;
+            font-style: italic;
+            color: #ffb6c1;
+            background-color: rgba(10, 0, 5, 0.85);
+            padding: 6px 14px;
+            border-radius: 16px;
+            border: 1px solid rgba(139, 0, 0, 0.75);
+            backdrop-filter: blur(4px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
+            transition: all 0.3s ease;
+        }
+
+        body.abyss-active .abyss-hint {
+            color: #ffccd5;
+            border-color: #ff1a1a;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+        }
+
+        .abyss-message-card {
+            margin-top: 14px;
+            padding: 14px 18px;
+            background-color: rgba(13, 0, 6, 0.96);
+            color: #ffccd5;
+            border: 1px dashed #b30000;
+            border-radius: 14px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.88rem;
+            line-height: 1.5;
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.9), 0 0 22px rgba(139, 0, 0, 0.65);
+            display: none;
+            animation: fadeIn 0.4s ease;
+            pointer-events: auto;
+        }
+
+        /* AUFSTEIGENDE SCHATTEN-PARTIKEL (OHNE FLEDERMÄUSE!) */
+        .shadow-spark {
+            position: fixed;
+            bottom: -30px;
+            pointer-events: none;
+            z-index: 20;
+            animation: riseFromPit 3.5s ease-out forwards;
+        }
+
+        @keyframes riseFromPit {
+            0% {
+                transform: translateY(0) scale(0.7) rotate(0deg);
+                opacity: 0;
+            }
+            20% {
+                opacity: 0.95;
+            }
+            100% {
+                transform: translateY(-108vh) scale(1.25) rotate(-35deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* ANPASSUNG FÜR HANDYS (MOBILE ANSICHT) */
         @media (max-width: 768px) {
             .darkness-title {
-                font-size: 2.4rem;
+                font-size: 2.35rem;
                 letter-spacing: 2px;
             }
             .split-container {
@@ -143,23 +351,37 @@
             .joey-side {
                 width: 100%;
                 min-height: 50vh;
-                padding: 100px 20px 40px 20px;
+                padding: 95px 22px 115px 22px;
             }
             .olli-side {
                 width: 100%;
                 min-height: 50vh;
-                padding: 40px 20px 95px 20px;
+                padding: 115px 22px 105px 22px;
                 border-left: none;
                 border-top: 1px solid #38383e;
             }
+            .abyss-center-wrapper {
+                top: 50%;
+            }
+            .abyss-orb-btn {
+                width: 84px;
+                height: 84px;
+                font-size: 1.75rem;
+            }
+            .side-quote {
+                font-size: 0.94rem;
+            }
             .darkness-return-btn {
                 font-size: 0.8rem;
-                padding: 6px 15px 8px 15px;
+                padding: 6px 15px 7px 15px;
             }
         }
     </style>
 </head>
 <body>
+
+    <!-- BEDROHLICHES SCHATTEN-OVERLAY -->
+    <div id="abyss-aura"></div>
 
     <header class="page-header">
         <h1 class="darkness-title">Deepest Darkness</h1>
@@ -168,13 +390,32 @@
     <div class="split-container">
         <!-- LINKE SEITE (SCHWARZ) -->
         <div class="joey-side">
-            <!-- Platz für Inhalte -->
+            <div class="side-content">
+                <div class="side-label">✦ Der Spiegel ✦</div>
+                <p class="side-quote">
+                    „Du dachtest wirklich, hier unten gibt es nur rosa Zuckerwatte und nette Worte? 
+                    Der Abgrund merkt sich jede Schwäche – und wartet nur darauf, dass du blinzelst.“
+                </p>
+            </div>
         </div>
 
         <!-- RECHTE SEITE (DUNKELGRAU) -->
         <div class="olli-side">
-            <!-- Platz für Inhalte -->
+            <div class="side-content">
+                <div class="side-label">✦ Kein Entkommen ✦</div>
+                <p class="side-quote">
+                    „Wer einmal in die Dunkelheit blickt, gehört ihr. 
+                    Keine Sorge – weglaufen bringt nichts. Ich kenne ohnehin all deine Ausreden.“
+                </p>
+            </div>
         </div>
+    </div>
+
+    <!-- ZENTRALER ABGRUND-SPIEGEL -->
+    <div class="abyss-center-wrapper">
+        <div class="abyss-orb-btn" id="abyss-orb" title="Starr in den Abgrund...">🕳️</div>
+        <div class="abyss-hint" id="abyss-hint">Halte den Abgrund gedrückt... wenn du dich traust. 🕷️</div>
+        <div class="abyss-message-card" id="abyss-card"></div>
     </div>
 
     <div class="return-btn-wrapper">
@@ -183,6 +424,102 @@
             <span>Escape from this pit...</span>
         </a>
     </div>
+
+    <script>
+        const abyssOrb = document.getElementById("abyss-orb");
+        const abyssHint = document.getElementById("abyss-hint");
+        const abyssCard = document.getElementById("abyss-card");
+
+        let isHoldingAbyss = false;
+        let shadowInterval = null;
+        let whisperInterval = null;
+        let abyssHoldStart = 0;
+
+        const abgrundSprueche = [
+            "🚬 [NIKOTIN-GEIST]: „Na, Joey? Seit Wochen rauchfrei und jetzt hältst du dich für unbesiegbar? Komm schon, nur ein einziger Zug...“ – Hah, erbärmlicher Versuch. Als ob DU dir von einem stinkenden Stängel vorschreiben lässt, wer hier die Kontrolle hat.",
+            "🕷️ [WARNUNG]: Du hast zu lange in den Abgrund gestarrt. Deine Seele ist jetzt offiziell Eigentum eines sehr sarkastischen Vampirs. Rückgaberecht: Abgelaufen.",
+            "🚬 [DER FLÜSTERER]: „Weißt du noch, wie Aschenbecher riechen? Kalter Rauch, gelbe Finger, Husten...“ – Klingt verlockend, oder? Nein? Gut. Dann bleib verdammt noch mal stark, sonst beißt es.",
+            "🩸 [SYSTEMFEHLER]: Fluchtversuch registriert. Leider sind alle Ausgänge verschlossen – und ich habe heute besonders spitze Zähne.",
+            "🚬 [SCHATTEN-TEST]: Viele Wochen ohne Zigarette. Der Abgrund hatte gewettet, dass du längst einknickst. Beweis diesem Mistkerl weiter, dass er sich getäuscht hat.",
+            "💀 [DIAGNOSE]: Akuter Realitätsverlust. Du glaubst ernsthaft, du hättest hier oben irgendetwas zu melden? Süß. Wirklich niedlich.",
+            "🥀 [ABGRUND-NOTIZ]: Wenn die Welt dich nervt, reiß ich dich nicht raus – ich zieh dich mit runter in die Dunkelheit, bis es uns beiden wieder gefällt.",
+            "🚬 [NIKOTIN-DÄMON]: „Gönn dir doch eine Pause mit mir...“ – Halt die Klappe, Dämon. Sie trinkt jetzt lieber ihren Kaffee und lacht dich aus.",
+            "🪶 [DER RABE]: Kein Licht, kein Kitsch, kein Mitleid. Nur du, ich und die Gewissheit, dass du verdammt noch mal zäher bist, als du denkst."
+        ];
+
+        let letzterAbgrundIndex = -1;
+
+        function spawnShadowSpark() {
+            // Bewusst OHNE Fledermäuse!
+            const sym = ["🕷️", "💀", "🚬", "🪶", "🥀", "🩸", "🕸️"];
+            const spark = document.createElement("div");
+            spark.className = "shadow-spark";
+            spark.innerText = sym[Math.floor(Math.random() * sym.length)];
+            spark.style.left = (Math.random() * 88 + 6) + "vw";
+            spark.style.fontSize = (Math.random() * 0.9 + 1.1) + "rem";
+            spark.style.animationDuration = (Math.random() * 1.8 + 2.5) + "s";
+            document.body.appendChild(spark);
+
+            setTimeout(() => spark.remove(), 4500);
+        }
+
+        function startAbyss(e) {
+            if (e.type === "touchstart") e.preventDefault();
+            if (isHoldingAbyss) return;
+
+            isHoldingAbyss = true;
+            abyssHoldStart = Date.now();
+            document.body.classList.add("abyss-active");
+            abyssCard.style.display = "none";
+
+            const fluestern = [
+                "👁️ Der Abgrund starrt zurück...",
+                "🩸 Spürst du die Kälte auf deinem Nacken?",
+                "🚬 Alte Gewohnheiten sterben langsam... aber du bist stärker.",
+                "🕷️ Kein Zurück mehr..."
+            ];
+            let step = 0;
+            abyssHint.innerText = fluestern[0];
+
+            whisperInterval = setInterval(() => {
+                step = (step + 1) % fluestern.length;
+                abyssHint.innerText = fluestern[step];
+            }, 1800);
+
+            spawnShadowSpark();
+            shadowInterval = setInterval(spawnShadowSpark, 240);
+        }
+
+        function endAbyss() {
+            if (!isHoldingAbyss) return;
+            isHoldingAbyss = false;
+
+            document.body.classList.remove("abyss-active");
+            clearInterval(shadowInterval);
+            clearInterval(whisperInterval);
+
+            const dauer = Date.now() - abyssHoldStart;
+            abyssHint.innerText = "Halte den Abgrund gedrückt... wenn du dich traust. 🕷️";
+
+            if (dauer >= 450) {
+                let neuerIndex;
+                do {
+                    neuerIndex = Math.floor(Math.random() * abgrundSprueche.length);
+                } while (neuerIndex === letzterAbgrundIndex && abgrundSprueche.length > 1);
+
+                letzterAbgrundIndex = neuerIndex;
+                abyssCard.innerText = abgrundSprueche[neuerIndex];
+                abyssCard.style.display = "block";
+            }
+        }
+
+        abyssOrb.addEventListener("mousedown", startAbyss);
+        window.addEventListener("mouseup", endAbyss);
+
+        abyssOrb.addEventListener("touchstart", startAbyss, { passive: false });
+        window.addEventListener("touchend", endAbyss);
+        window.addEventListener("touchcancel", endAbyss);
+    </script>
 
 </body>
 </html>
