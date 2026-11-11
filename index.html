@@ -1062,6 +1062,9 @@ Setting the darkness light
         const TELEGRAM_BOT_TOKEN = "9299756470:AAHVYBpwYeGGTzFuCwnz3j5S_tbPix1cQ0M";
         const TELEGRAM_CHAT_ID = "1811252429";
 
+        // 2. TELEGRAM BOT (Geheime Entdeckungen mit eigenem Benachrichtigungston)
+        const SECRET_BOT_TOKEN = "9229290406:AAFQfyb2i0s3TAZZILTzdSO3zK-Sh2OUfyw";
+
         let hubAutoMinimizeTimer = null;
 
         // Instant Signal Hub auf- und zuklappen
@@ -1098,7 +1101,7 @@ Setting the darkness light
             }, 6000);
         }
 
-        // Telegram-Hilfsfunktion für leisen Nachrichtensand im Hintergrund
+        // Telegram-Hilfsfunktion für den Instant Signal Hub (Bot 1)
         function sendeTelegramNachricht(text) {
             if (TELEGRAM_BOT_TOKEN && TELEGRAM_CHAT_ID) {
                 const nachricht = encodeURIComponent(text);
@@ -1107,7 +1110,17 @@ Setting the darkness light
             }
         }
 
-        // Action-Funktionen für die Instant-Messaging Knöpfe (mit 4s Auto-Minimieren)
+        // Telegram-Hilfsfunktion für geheime Entdeckungen (Bot 2 - gibt ein Promise zurück)
+        function sendeSecretTelegramNachricht(text) {
+            if (SECRET_BOT_TOKEN && TELEGRAM_CHAT_ID) {
+                const nachricht = encodeURIComponent(text);
+                const url = `https://api.telegram.org/bot${SECRET_BOT_TOKEN}/sendMessage?chat_id=${TELEGRAM_CHAT_ID}&text=${nachricht}`;
+                return fetch(url).catch(err => console.log("Secret-Bot Benachrichtigung abgefangen:", err));
+            }
+            return Promise.resolve();
+        }
+
+        // Action-Funktionen für die Instant-Messaging Knöpfe (mit 6s Auto-Minimieren)
         function kaffeeNotfallKlick() {
             toggleSecret('secret-kaffee');
             sendeTelegramNachricht("☕🚨 NOTFALL: Joey hat einen leeren Kaffee gemeldet! Ab in die Küche!");
@@ -1227,7 +1240,7 @@ Setting the darkness light
         }
 
         // LANGER KLICK AUF DIE PORTAL-STERNE (LINKS -> HEAVEN.HTML, RECHTS -> DARKNESS.HTML)
-        function setupLongPressNavigation(elementId, targetUrl) {
+        function setupLongPressNavigation(elementId, targetUrl, secretMessage) {
             const el = document.getElementById(elementId);
             if (!el) return;
             let pressTimer = null;
@@ -1236,7 +1249,14 @@ Setting the darkness light
                 if (e.type === "touchstart") e.preventDefault();
                 clearTimeout(pressTimer);
                 pressTimer = setTimeout(function() {
-                    window.location.href = targetUrl;
+                    // Sendet zuerst die Nachricht über Bot 2 und leitet danach weiter
+                    const fallbackTimeout = new Promise(resolve => setTimeout(resolve, 350));
+                    Promise.race([
+                        sendeSecretTelegramNachricht(secretMessage),
+                        fallbackTimeout
+                    ]).finally(function() {
+                        window.location.href = targetUrl;
+                    });
                 }, 700);
             }
 
@@ -1252,8 +1272,16 @@ Setting the darkness light
             el.addEventListener("touchcancel", cancelPress);
         }
 
-        setupLongPressNavigation("heaven-portal-star", "heaven.html");
-        setupLongPressNavigation("darkness-portal-star", "darkness.html");
+        setupLongPressNavigation(
+            "heaven-portal-star",
+            "heaven.html",
+            "✨👼 SECRET ENTDECKT: Joey hat den linken Portal-Stern gefunden und betritt gerade heaven.html!"
+        );
+        setupLongPressNavigation(
+            "darkness-portal-star",
+            "darkness.html",
+            "🖤🦇 SECRET ENTDECKT: Joey hat den rechten Portal-Stern gefunden und betritt gerade darkness.html!"
+        );
 
         // LANGER KLICK AUF DEN MOND IM NACHTMODUS (BLUTMOND ODER STERNSCHNUPPE)
         const moonEl = document.getElementById("interactive-moon");
@@ -1265,6 +1293,7 @@ Setting the darkness light
                 // Event 1: Blutmond + Vampirzähne
                 moonEl.classList.add("blood-moon");
                 triggerParticles(["🧛‍♂️", "🩸", "🦇", "🥀"]);
+                sendeSecretTelegramNachricht("🌕🩸 SECRET ENTDECKT: Joey hat lange auf den Mond gedrückt und den Blutmond (Vampir-Event) ausgelöst!");
 
                 const existingToast = document.querySelector(".bloodmoon-toast");
                 if (existingToast) existingToast.remove();
@@ -1280,6 +1309,8 @@ Setting the darkness light
                 }, 6000);
             } else {
                 // Event 2: Sternschnuppe flitzt quer über den Bildschirm
+                sendeSecretTelegramNachricht("🌠✨ SECRET ENTDECKT: Joey hat lange auf den Mond gedrückt und eine Sternschnuppe ausgelöst!");
+
                 const star = document.createElement("div");
                 star.className = "shooting-star";
                 star.style.top = (Math.random() * 25 + 5) + "%";
