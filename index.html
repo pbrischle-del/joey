@@ -723,7 +723,7 @@
             background: linear-gradient(165deg, rgba(26, 0, 13, 0.97) 0%, rgba(10, 10, 12, 0.98) 100%);
             border: 1px solid #d87093;
             border-radius: 22px;
-            padding: 20px 18px 18px 18px;
+            padding: 22px 20px 20px 20px;
             max-width: 390px;
             width: 100%;
             max-height: 92vh;
@@ -766,23 +766,23 @@
             font-style: italic;
             color: #ffc0cb;
             opacity: 0.85;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
         }
 
         /* PLATTENSPIELER-BÜHNE (SCHALLPLATTE + TONARM) */
         .turntable-stage {
             position: relative;
-            width: 195px;
-            height: 195px;
-            margin: 0 auto 12px auto;
+            width: 210px;
+            height: 210px;
+            margin: 0 auto 14px auto;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
         .big-vinyl-disc {
-            width: 184px;
-            height: 184px;
+            width: 196px;
+            height: 196px;
             border-radius: 50%;
             background:
                 repeating-radial-gradient(
@@ -824,8 +824,8 @@
 
         /* Rosa Platten-Etikett in der Mitte */
         .vinyl-center-label {
-            width: 68px;
-            height: 68px;
+            width: 72px;
+            height: 72px;
             border-radius: 50%;
             background: radial-gradient(circle, #ffb6c1 0%, #d87093 85%, #9e3f61 100%);
             border: 2px solid #4a0e2e;
@@ -835,7 +835,7 @@
             justify-content: center;
             color: #1a000d;
             font-weight: bold;
-            font-size: 0.6rem;
+            font-size: 0.62rem;
             letter-spacing: 0.5px;
             box-sizing: border-box;
             padding: 4px;
@@ -863,7 +863,7 @@
             top: 4px;
             right: -6px;
             width: 14px;
-            height: 106px;
+            height: 112px;
             transform-origin: 7px 10px;
             transform: rotate(-18deg);
             transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -886,7 +886,7 @@
 
         .tonearm-rod {
             width: 3px;
-            height: 76px;
+            height: 82px;
             background: linear-gradient(90deg, #cccccc, #ffffff, #999999);
             margin: 0 auto;
             border-radius: 2px;
@@ -903,32 +903,12 @@
         }
 
         .vinyl-now-playing {
-            font-size: 0.8rem;
+            font-size: 0.82rem;
             color: #ffffff;
             min-height: 1.3em;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             font-style: italic;
             text-shadow: 0 0 8px rgba(216, 112, 147, 0.6);
-        }
-
-        /* DEZENTES YOUTUBE-AUDIO-FENSTER FÜR MOBILE TON-FREIGABE */
-        .yt-embed-shell {
-            width: 220px;
-            height: 46px;
-            margin: 0 auto 10px auto;
-            border-radius: 10px;
-            overflow: hidden;
-            border: 1px solid rgba(216, 112, 147, 0.45);
-            background: #000000;
-            opacity: 0.85;
-            position: relative;
-        }
-
-        .yt-embed-shell iframe {
-            width: 220px;
-            height: 124px;
-            margin-top: -39px;
-            border: 0;
         }
 
         .vinyl-tracklist {
@@ -1444,11 +1424,6 @@ Setting the darkness light
 
             <div class="vinyl-now-playing" id="vinyl-now-playing">Wähle einen Song für die Nadel...</div>
 
-            <!-- Dezentes YouTube-Embed zur zuverlässigen Ton-Freigabe auf Handy & Desktop -->
-            <div class="yt-embed-shell">
-                <div id="yt-vinyl-player"></div>
-            </div>
-
             <div class="vinyl-tracklist" id="vinyl-tracklist"></div>
 
             <div class="vinyl-controls-row">
@@ -1456,9 +1431,6 @@ Setting the darkness light
             </div>
         </div>
     </div>
-
-    <!-- YouTube IFrame API laden -->
-    <script src="https://www.youtube.com/iframe_api"></script>
 
     <script>
         // TELEGRAM BOT CONFIGURATION
@@ -1647,117 +1619,72 @@ Setting the darkness light
         }
 
         // =========================================================================
-        // SCHALLPLATTENSPIELER (YOUTUBE-ORIGINALSONGS · RANDOM 15s AUSSCHNITT)
+        // SCHALLPLATTENSPIELER (FERTIGE 15s MP3-JINGLES · START AB 0:00)
         // =========================================================================
-        let ytPlayer = null;
-        let ytPlayerReady = false;
-        let pendingTrack = null;
-        let vinylSnippetTimer = null;
+        const vinylAudio = new Audio();
+        vinylAudio.preload = "auto";
+
+        let vinylFadeInterval = null;
         let activeTrackId = null;
 
         const DAY_TRACKS = [
             {
                 id: "halo",
-                videoId: "iEH4eqtK8SU",
+                file: "01_Depeche_Mode_Halo.mp3",
                 title: "Halo",
-                artist: "Depeche Mode",
-                minStart: 35,
-                maxStart: 185
+                artist: "Depeche Mode"
             },
             {
                 id: "here_is_the_house",
-                videoId: "cabDGPZLpNk",
+                file: "02_Depeche_Mode_Here_Is_the_House.mp3",
                 title: "Here Is the House",
-                artist: "Depeche Mode",
-                minStart: 35,
-                maxStart: 185
+                artist: "Depeche Mode"
             },
             {
                 id: "dont_cry",
-                videoId: "zRIbf6JqkNc",
+                file: "03_Guns_N_Roses_Dont_Cry.mp3",
                 title: "Don't Cry",
-                artist: "Guns N' Roses",
-                minStart: 40,
-                maxStart: 200
+                artist: "Guns N' Roses"
             },
             {
                 id: "knockin",
-                videoId: "gXVGZv9Ya6w",
+                file: "04_Guns_N_Roses_Knockin_on_Heavens_Door.mp3",
                 title: "Knockin' on Heaven's Door",
-                artist: "Guns N' Roses",
-                minStart: 45,
-                maxStart: 230
+                artist: "Guns N' Roses"
             }
         ];
 
         const NIGHT_TRACKS = [
             {
                 id: "blue_dress",
-                videoId: "A8RmelAYu0k",
+                file: "05_Depeche_Mode_Blue_Dress.mp3",
                 title: "Blue Dress",
-                artist: "Depeche Mode",
-                minStart: 35,
-                maxStart: 185
+                artist: "Depeche Mode"
             },
             {
                 id: "stripped",
-                videoId: "vYH0vhLpqHU",
+                file: "06_Depeche_Mode_Stripped.mp3",
                 title: "Stripped",
-                artist: "Depeche Mode",
-                minStart: 45,
-                maxStart: 195
+                artist: "Depeche Mode"
             },
             {
                 id: "nighttrain",
-                videoId: "VMDljoM5JFI",
+                file: "07_Guns_N_Roses_Nightrain.mp3",
                 title: "Nighttrain",
-                artist: "Guns N' Roses",
-                minStart: 35,
-                maxStart: 185
+                artist: "Guns N' Roses"
             },
             {
                 id: "rocket_queen",
-                videoId: "YxW9iekNSek",
+                file: "08_Guns_N_Roses_Rocket_Queen.mp3",
                 title: "Rocket Queen",
-                artist: "Guns N' Roses",
-                minStart: 45,
-                maxStart: 240
+                artist: "Guns N' Roses"
             }
         ];
 
-        // Wird automatisch von der YouTube IFrame API aufgerufen
-        function onYouTubeIframeAPIReady() {
-            ytPlayer = new YT.Player("yt-vinyl-player", {
-                height: "124",
-                width: "220",
-                videoId: "iEH4eqtK8SU",
-                playerVars: {
-                    playsinline: 1,
-                    controls: 1,
-                    rel: 0,
-                    modestbranding: 1
-                },
-                events: {
-                    onReady: function() {
-                        ytPlayerReady = true;
-                        if (pendingTrack) {
-                            const t = pendingTrack;
-                            pendingTrack = null;
-                            playVinylTrack(t);
-                        }
-                    },
-                    onStateChange: function(event) {
-                        // Wenn das Video tatsächlich losläuft (PLAYING = 1), 15-Sekunden-Timer starten
-                        if (event.data === YT.PlayerState.PLAYING && activeTrackId) {
-                            clearTimeout(vinylSnippetTimer);
-                            vinylSnippetTimer = setTimeout(function() {
-                                stopVinylPlayback();
-                            }, 15000);
-                        }
-                    }
-                }
-            });
-        }
+        // Wenn der 15s-Jingle zu Ende ist, Nadel automatisch anheben
+        vinylAudio.addEventListener("ended", function() {
+            stopVinylPlayback();
+        });
 
         function isNightModeActive() {
             return document.body.classList.contains("night-active");
@@ -1795,8 +1722,8 @@ Setting the darkness light
             const night = isNightModeActive();
             if (subEl) {
                 subEl.innerText = night
-                    ? "🌙 Nacht-Pressung · 15s Zufalls-Rille"
-                    : "☀️ Tages-Pressung · 15s Zufalls-Rille";
+                    ? "🌙 Nacht-Pressung · Midnight Edition"
+                    : "☀️ Tages-Pressung · Original Vinyl";
             }
             if (labelEl) {
                 labelEl.innerText = night ? "NIGHT" : "33 RPM";
@@ -1814,8 +1741,21 @@ Setting the darkness light
             });
         }
 
+        function fadeInAudio(audioEl) {
+            clearInterval(vinylFadeInterval);
+            audioEl.volume = 0.05;
+            vinylFadeInterval = setInterval(function() {
+                if (audioEl.volume < 0.95) {
+                    audioEl.volume = Math.min(1, audioEl.volume + 0.1);
+                } else {
+                    audioEl.volume = 1;
+                    clearInterval(vinylFadeInterval);
+                }
+            }, 50);
+        }
+
         function playVinylTrack(track) {
-            clearTimeout(vinylSnippetTimer);
+            stopVinylPlayback(false);
             activeTrackId = track.id;
 
             const disc = document.getElementById("big-vinyl-disc");
@@ -1823,48 +1763,31 @@ Setting the darkness light
             const mini = document.getElementById("mini-vinyl-btn");
             const nowPlaying = document.getElementById("vinyl-now-playing");
 
-            // Zufällige Startsekunde im Song berechnen
-            const randomStart = Math.floor(Math.random() * (track.maxStart - track.minStart + 1)) + track.minStart;
-            const mins = Math.floor(randomStart / 60);
-            const secs = String(randomStart % 60).padStart(2, "0");
-
             if (disc) disc.classList.add("spinning");
             if (arm) arm.classList.add("on-record");
             if (mini) mini.classList.add("playing");
-            if (nowPlaying) nowPlaying.innerText = `♪ ${track.artist} – "${track.title}" (ab ${mins}:${secs} · 15s)`;
+            if (nowPlaying) nowPlaying.innerText = `♪ Läuft: ${track.artist} – "${track.title}"`;
 
             renderVinylTracklist();
 
+            vinylAudio.src = track.file;
+            vinylAudio.currentTime = 0;
+
+            fadeInAudio(vinylAudio);
+            vinylAudio.play().catch(err => console.log("Audio-Wiedergabe Hinweis:", err));
+
             // Telegram-Meldung über den zweiten Bot (SECRET_BOT_TOKEN)
             const modusText = isNightModeActive() ? "im Nachtmodus 🌙" : "im Tagmodus ☀️";
-            sendeSecretTelegramNachricht(`💿🎶 VINYL AUFGELEGT: Joey hört gerade "${track.title}" von ${track.artist} (${modusText}, ab ${mins}:${secs})!`);
-
-            if (ytPlayer && ytPlayerReady && typeof ytPlayer.loadVideoById === "function") {
-                ytPlayer.unMute();
-                ytPlayer.setVolume(100);
-                ytPlayer.loadVideoById({
-                    videoId: track.videoId,
-                    startSeconds: randomStart
-                });
-                ytPlayer.playVideo();
-
-                // Sicherheits-Timer (falls onStateChange verzögert feuert)
-                vinylSnippetTimer = setTimeout(function() {
-                    stopVinylPlayback();
-                }, 16500);
-            } else {
-                pendingTrack = track;
-            }
+            sendeSecretTelegramNachricht(`💿🎶 VINYL AUFGELEGT: Joey hört gerade "${track.title}" von ${track.artist} (${modusText})!`);
         }
 
         function stopVinylPlayback(updateUi = true) {
-            clearTimeout(vinylSnippetTimer);
-            vinylSnippetTimer = null;
+            clearInterval(vinylFadeInterval);
+            vinylFadeInterval = null;
             activeTrackId = null;
 
-            if (ytPlayer && ytPlayerReady && typeof ytPlayer.pauseVideo === "function") {
-                ytPlayer.pauseVideo();
-            }
+            vinylAudio.pause();
+            vinylAudio.currentTime = 0;
 
             const disc = document.getElementById("big-vinyl-disc");
             const arm = document.getElementById("vinyl-tonearm");
