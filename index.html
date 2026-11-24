@@ -643,6 +643,360 @@
             pointer-events: none;
         }
 
+        /* MINI-SCHALLPLATTE UNTEN RECHTS (GLEICHE HÖHE WIE SIGNAL HUB) */
+        .mini-vinyl-trigger {
+            position: fixed;
+            bottom: 12px;
+            right: 12px;
+            z-index: 104;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: radial-gradient(circle,
+                #1a000d 0%, #1a000d 10%,
+                #d87093 11%, #ffb6c1 28%, #d87093 34%,
+                #111111 35%, #222222 44%, #111111 53%,
+                #1e1e1e 62%, #111111 71%, #202020 82%,
+                #0a0a0a 96%, #d87093 100%);
+            border: 1.5px solid #d87093;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.75);
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .mini-vinyl-trigger:hover {
+            transform: scale(1.12) rotate(25deg);
+            box-shadow: 0 0 15px rgba(255, 182, 193, 0.7);
+        }
+
+        /* Im Nachtmodus glüht die Mini-Schallplatte sanft rosa */
+        body.night-active .mini-vinyl-trigger {
+            border-color: #ffb6c1;
+            animation: vinylNightGlow 2.6s infinite ease-in-out;
+        }
+
+        /* Wenn gerade Musik läuft, dreht sich auch die Mini-Platte */
+        .mini-vinyl-trigger.playing {
+            animation: spinVinyl 3.5s linear infinite !important;
+        }
+
+        @keyframes vinylNightGlow {
+            0%, 100% {
+                box-shadow: 0 0 10px rgba(216, 112, 147, 0.65), 0 0 22px rgba(255, 182, 193, 0.35);
+            }
+            50% {
+                box-shadow: 0 0 18px rgba(255, 182, 193, 0.95), 0 0 34px rgba(216, 112, 147, 0.75);
+            }
+        }
+
+        @keyframes spinVinyl {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* GROßES VINYL-OVERLAY MITTIG ÜBER DEM BILDSCHIRM */
+        .vinyl-modal-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 1200;
+            background: rgba(8, 0, 5, 0.84);
+            backdrop-filter: blur(6px);
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            box-sizing: border-box;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .vinyl-modal-backdrop.open {
+            display: flex;
+        }
+
+        .vinyl-player-card {
+            position: relative;
+            background: linear-gradient(165deg, rgba(26, 0, 13, 0.97) 0%, rgba(10, 10, 12, 0.98) 100%);
+            border: 1px solid #d87093;
+            border-radius: 22px;
+            padding: 20px 18px 18px 18px;
+            max-width: 390px;
+            width: 100%;
+            max-height: 92vh;
+            overflow-y: auto;
+            text-align: center;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.85), 0 0 30px rgba(216, 112, 147, 0.3);
+            color: #ffb6c1;
+        }
+
+        .vinyl-close-btn {
+            position: absolute;
+            top: 10px;
+            right: 14px;
+            background: none;
+            border: none;
+            color: #ffb6c1;
+            font-size: 1.4rem;
+            cursor: pointer;
+            line-height: 1;
+            opacity: 0.75;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+
+        .vinyl-close-btn:hover {
+            opacity: 1;
+            transform: scale(1.2);
+        }
+
+        .vinyl-header-title {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #ffb6c1;
+            margin: 0 0 4px 0;
+        }
+
+        .vinyl-mode-badge {
+            display: inline-block;
+            font-size: 0.72rem;
+            font-style: italic;
+            color: #ffc0cb;
+            opacity: 0.85;
+            margin-bottom: 12px;
+        }
+
+        /* PLATTENSPIELER-BÜHNE (SCHALLPLATTE + TONARM) */
+        .turntable-stage {
+            position: relative;
+            width: 195px;
+            height: 195px;
+            margin: 0 auto 12px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .big-vinyl-disc {
+            width: 184px;
+            height: 184px;
+            border-radius: 50%;
+            background:
+                repeating-radial-gradient(
+                    circle at center,
+                    #111111 0px,
+                    #111111 3px,
+                    #1f1f1f 4px,
+                    #141414 6px
+                );
+            border: 2px solid #2e2e2e;
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.9), 0 0 18px rgba(216, 112, 147, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* Lichtreflexion auf dem Vinyl */
+        .big-vinyl-disc::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: conic-gradient(
+                from 35deg,
+                transparent 0deg,
+                rgba(255, 182, 193, 0.14) 30deg,
+                transparent 65deg,
+                transparent 180deg,
+                rgba(255, 182, 193, 0.12) 215deg,
+                transparent 250deg
+            );
+            pointer-events: none;
+        }
+
+        .big-vinyl-disc.spinning {
+            animation: spinVinyl 4s linear infinite;
+        }
+
+        /* Rosa Platten-Etikett in der Mitte */
+        .vinyl-center-label {
+            width: 68px;
+            height: 68px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #ffb6c1 0%, #d87093 85%, #9e3f61 100%);
+            border: 2px solid #4a0e2e;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #1a000d;
+            font-weight: bold;
+            font-size: 0.6rem;
+            letter-spacing: 0.5px;
+            box-sizing: border-box;
+            padding: 4px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .vinyl-center-label span {
+            display: block;
+            line-height: 1.15;
+        }
+
+        .vinyl-spindle {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #0d0d0d;
+            border: 1.5px solid #ffb6c1;
+            margin: 3px auto;
+        }
+
+        /* Schwenkbarer Tonarm oben rechts */
+        .vinyl-tonearm {
+            position: absolute;
+            top: 4px;
+            right: -6px;
+            width: 14px;
+            height: 106px;
+            transform-origin: 7px 10px;
+            transform: rotate(-18deg);
+            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        .vinyl-tonearm.on-record {
+            transform: rotate(22deg);
+        }
+
+        .tonearm-base {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #ffb6c1, #8a3854);
+            border: 1px solid #1a000d;
+            margin-left: -2px;
+        }
+
+        .tonearm-rod {
+            width: 3px;
+            height: 76px;
+            background: linear-gradient(90deg, #cccccc, #ffffff, #999999);
+            margin: 0 auto;
+            border-radius: 2px;
+        }
+
+        .tonearm-head {
+            width: 9px;
+            height: 14px;
+            background: #d87093;
+            border: 1px solid #ffb6c1;
+            border-radius: 2px;
+            margin: 0 auto;
+            transform: rotate(18deg);
+        }
+
+        .vinyl-now-playing {
+            font-size: 0.8rem;
+            color: #ffffff;
+            min-height: 1.3em;
+            margin-bottom: 10px;
+            font-style: italic;
+            text-shadow: 0 0 8px rgba(216, 112, 147, 0.6);
+        }
+
+        /* DEZENTES YOUTUBE-AUDIO-FENSTER FÜR MOBILE TON-FREIGABE */
+        .yt-embed-shell {
+            width: 220px;
+            height: 46px;
+            margin: 0 auto 10px auto;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid rgba(216, 112, 147, 0.45);
+            background: #000000;
+            opacity: 0.85;
+            position: relative;
+        }
+
+        .yt-embed-shell iframe {
+            width: 220px;
+            height: 124px;
+            margin-top: -39px;
+            border: 0;
+        }
+
+        .vinyl-tracklist {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+            margin-bottom: 12px;
+        }
+
+        .vinyl-track-btn {
+            background-color: rgba(26, 0, 13, 0.85);
+            color: #ffb6c1;
+            border: 1px solid #d87093;
+            border-radius: 12px;
+            padding: 8px 12px;
+            font-family: 'Georgia', serif;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-align: left;
+            gap: 8px;
+        }
+
+        .vinyl-track-btn:hover {
+            background-color: rgba(216, 112, 147, 0.25);
+            border-color: #ffb6c1;
+            transform: translateY(-1px);
+        }
+
+        .vinyl-track-btn.active {
+            background-color: #d87093;
+            color: #1a000d;
+            font-weight: bold;
+            box-shadow: 0 0 12px rgba(255, 182, 193, 0.5);
+        }
+
+        .track-artist {
+            font-size: 0.7rem;
+            opacity: 0.85;
+            white-space: nowrap;
+        }
+
+        .vinyl-controls-row {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .vinyl-stop-btn {
+            background: rgba(255, 182, 193, 0.12);
+            color: #ffb6c1;
+            border: 1px solid #d87093;
+            border-radius: 14px;
+            padding: 5px 14px;
+            font-family: 'Georgia', serif;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .vinyl-stop-btn:hover {
+            background: #ffb6c1;
+            color: #1a000d;
+        }
+
         /* MESSAGING HUB CONTAINER (STARTET MINIMIERT) */
         .messaging-hub {
             display: flex;
@@ -832,7 +1186,13 @@
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 8px;
-                max-width: calc(100vw - 20px);
+                max-width: calc(100vw - 72px);
+            }
+            .mini-vinyl-trigger {
+                bottom: 10px;
+                right: 10px;
+                width: 40px;
+                height: 40px;
             }
             .messaging-hub:not(.minimized) {
                 width: calc(100vw - 20px);
@@ -1057,6 +1417,49 @@ Setting the darkness light
         </div>
     </div>
 
+    <!-- MINI-SCHALLPLATTE UNTEN RECHTS (GLEICHE HÖHE WIE INSTANT SIGNAL HUB) -->
+    <div class="mini-vinyl-trigger" id="mini-vinyl-btn" onclick="openVinylModal()" title="Geheime Schallplatte auflegen 🖤"></div>
+
+    <!-- GROßER SCHALLPLATTENSPIELER OVERLAY -->
+    <div class="vinyl-modal-backdrop" id="vinyl-modal" onclick="handleVinylBackdropClick(event)">
+        <div class="vinyl-player-card">
+            <button class="vinyl-close-btn" onclick="closeVinylModal()" title="Plattenspieler schließen">×</button>
+            <div class="vinyl-header-title">✦ Olli & Joey Vinyl ✦</div>
+            <div class="vinyl-mode-badge" id="vinyl-mode-subtitle">Tages-Pressung · Original Vinyl</div>
+
+            <div class="turntable-stage">
+                <div class="big-vinyl-disc" id="big-vinyl-disc">
+                    <div class="vinyl-center-label">
+                        <span>O & J</span>
+                        <div class="vinyl-spindle"></div>
+                        <span id="vinyl-label-edition">33 RPM</span>
+                    </div>
+                </div>
+                <div class="vinyl-tonearm" id="vinyl-tonearm">
+                    <div class="tonearm-base"></div>
+                    <div class="tonearm-rod"></div>
+                    <div class="tonearm-head"></div>
+                </div>
+            </div>
+
+            <div class="vinyl-now-playing" id="vinyl-now-playing">Wähle einen Song für die Nadel...</div>
+
+            <!-- Dezentes YouTube-Embed zur zuverlässigen Ton-Freigabe auf Handy & Desktop -->
+            <div class="yt-embed-shell">
+                <div id="yt-vinyl-player"></div>
+            </div>
+
+            <div class="vinyl-tracklist" id="vinyl-tracklist"></div>
+
+            <div class="vinyl-controls-row">
+                <button class="vinyl-stop-btn" onclick="stopVinylPlayback()">⏹ Nadel anheben</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- YouTube IFrame API laden -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+
     <script>
         // TELEGRAM BOT CONFIGURATION
         const TELEGRAM_BOT_TOKEN = "9299756470:AAHVYBpwYeGGTzFuCwnz3j5S_tbPix1cQ0M";
@@ -1236,6 +1639,244 @@ Setting the darkness light
             } else {
                 overlay.style.display = "block";
                 body.classList.add("night-active");
+            }
+
+            // Falls der Plattenspieler offen ist, Tracklist direkt auf Tag/Nacht aktualisieren
+            stopVinylPlayback();
+            renderVinylTracklist();
+        }
+
+        // =========================================================================
+        // SCHALLPLATTENSPIELER (YOUTUBE-ORIGINALSONGS · RANDOM 15s AUSSCHNITT)
+        // =========================================================================
+        let ytPlayer = null;
+        let ytPlayerReady = false;
+        let pendingTrack = null;
+        let vinylSnippetTimer = null;
+        let activeTrackId = null;
+
+        const DAY_TRACKS = [
+            {
+                id: "halo",
+                videoId: "iEH4eqtK8SU",
+                title: "Halo",
+                artist: "Depeche Mode",
+                minStart: 35,
+                maxStart: 185
+            },
+            {
+                id: "here_is_the_house",
+                videoId: "cabDGPZLpNk",
+                title: "Here Is the House",
+                artist: "Depeche Mode",
+                minStart: 35,
+                maxStart: 185
+            },
+            {
+                id: "dont_cry",
+                videoId: "zRIbf6JqkNc",
+                title: "Don't Cry",
+                artist: "Guns N' Roses",
+                minStart: 40,
+                maxStart: 200
+            },
+            {
+                id: "knockin",
+                videoId: "gXVGZv9Ya6w",
+                title: "Knockin' on Heaven's Door",
+                artist: "Guns N' Roses",
+                minStart: 45,
+                maxStart: 230
+            }
+        ];
+
+        const NIGHT_TRACKS = [
+            {
+                id: "blue_dress",
+                videoId: "A8RmelAYu0k",
+                title: "Blue Dress",
+                artist: "Depeche Mode",
+                minStart: 35,
+                maxStart: 185
+            },
+            {
+                id: "stripped",
+                videoId: "vYH0vhLpqHU",
+                title: "Stripped",
+                artist: "Depeche Mode",
+                minStart: 45,
+                maxStart: 195
+            },
+            {
+                id: "nighttrain",
+                videoId: "VMDljoM5JFI",
+                title: "Nighttrain",
+                artist: "Guns N' Roses",
+                minStart: 35,
+                maxStart: 185
+            },
+            {
+                id: "rocket_queen",
+                videoId: "YxW9iekNSek",
+                title: "Rocket Queen",
+                artist: "Guns N' Roses",
+                minStart: 45,
+                maxStart: 240
+            }
+        ];
+
+        // Wird automatisch von der YouTube IFrame API aufgerufen
+        function onYouTubeIframeAPIReady() {
+            ytPlayer = new YT.Player("yt-vinyl-player", {
+                height: "124",
+                width: "220",
+                videoId: "iEH4eqtK8SU",
+                playerVars: {
+                    playsinline: 1,
+                    controls: 1,
+                    rel: 0,
+                    modestbranding: 1
+                },
+                events: {
+                    onReady: function() {
+                        ytPlayerReady = true;
+                        if (pendingTrack) {
+                            const t = pendingTrack;
+                            pendingTrack = null;
+                            playVinylTrack(t);
+                        }
+                    },
+                    onStateChange: function(event) {
+                        // Wenn das Video tatsächlich losläuft (PLAYING = 1), 15-Sekunden-Timer starten
+                        if (event.data === YT.PlayerState.PLAYING && activeTrackId) {
+                            clearTimeout(vinylSnippetTimer);
+                            vinylSnippetTimer = setTimeout(function() {
+                                stopVinylPlayback();
+                            }, 15000);
+                        }
+                    }
+                }
+            });
+        }
+
+        function isNightModeActive() {
+            return document.body.classList.contains("night-active");
+        }
+
+        function getCurrentTracks() {
+            return isNightModeActive() ? NIGHT_TRACKS : DAY_TRACKS;
+        }
+
+        function openVinylModal() {
+            const modal = document.getElementById("vinyl-modal");
+            if (!modal) return;
+            renderVinylTracklist();
+            modal.classList.add("open");
+        }
+
+        function closeVinylModal() {
+            const modal = document.getElementById("vinyl-modal");
+            if (modal) modal.classList.remove("open");
+            stopVinylPlayback();
+        }
+
+        function handleVinylBackdropClick(e) {
+            if (e.target && e.target.id === "vinyl-modal") {
+                closeVinylModal();
+            }
+        }
+
+        function renderVinylTracklist() {
+            const listEl = document.getElementById("vinyl-tracklist");
+            const subEl = document.getElementById("vinyl-mode-subtitle");
+            const labelEl = document.getElementById("vinyl-label-edition");
+            if (!listEl) return;
+
+            const night = isNightModeActive();
+            if (subEl) {
+                subEl.innerText = night
+                    ? "🌙 Nacht-Pressung · 15s Zufalls-Rille"
+                    : "☀️ Tages-Pressung · 15s Zufalls-Rille";
+            }
+            if (labelEl) {
+                labelEl.innerText = night ? "NIGHT" : "33 RPM";
+            }
+
+            const tracks = getCurrentTracks();
+            listEl.innerHTML = "";
+
+            tracks.forEach(function(track) {
+                const btn = document.createElement("button");
+                btn.className = "vinyl-track-btn" + (activeTrackId === track.id ? " active" : "");
+                btn.onclick = function() { playVinylTrack(track); };
+                btn.innerHTML = `<span>${activeTrackId === track.id ? "🔊" : "▶"} ${track.title}</span><span class="track-artist">${track.artist}</span>`;
+                listEl.appendChild(btn);
+            });
+        }
+
+        function playVinylTrack(track) {
+            clearTimeout(vinylSnippetTimer);
+            activeTrackId = track.id;
+
+            const disc = document.getElementById("big-vinyl-disc");
+            const arm = document.getElementById("vinyl-tonearm");
+            const mini = document.getElementById("mini-vinyl-btn");
+            const nowPlaying = document.getElementById("vinyl-now-playing");
+
+            // Zufällige Startsekunde im Song berechnen
+            const randomStart = Math.floor(Math.random() * (track.maxStart - track.minStart + 1)) + track.minStart;
+            const mins = Math.floor(randomStart / 60);
+            const secs = String(randomStart % 60).padStart(2, "0");
+
+            if (disc) disc.classList.add("spinning");
+            if (arm) arm.classList.add("on-record");
+            if (mini) mini.classList.add("playing");
+            if (nowPlaying) nowPlaying.innerText = `♪ ${track.artist} – "${track.title}" (ab ${mins}:${secs} · 15s)`;
+
+            renderVinylTracklist();
+
+            // Telegram-Meldung über den zweiten Bot (SECRET_BOT_TOKEN)
+            const modusText = isNightModeActive() ? "im Nachtmodus 🌙" : "im Tagmodus ☀️";
+            sendeSecretTelegramNachricht(`💿🎶 VINYL AUFGELEGT: Joey hört gerade "${track.title}" von ${track.artist} (${modusText}, ab ${mins}:${secs})!`);
+
+            if (ytPlayer && ytPlayerReady && typeof ytPlayer.loadVideoById === "function") {
+                ytPlayer.unMute();
+                ytPlayer.setVolume(100);
+                ytPlayer.loadVideoById({
+                    videoId: track.videoId,
+                    startSeconds: randomStart
+                });
+                ytPlayer.playVideo();
+
+                // Sicherheits-Timer (falls onStateChange verzögert feuert)
+                vinylSnippetTimer = setTimeout(function() {
+                    stopVinylPlayback();
+                }, 16500);
+            } else {
+                pendingTrack = track;
+            }
+        }
+
+        function stopVinylPlayback(updateUi = true) {
+            clearTimeout(vinylSnippetTimer);
+            vinylSnippetTimer = null;
+            activeTrackId = null;
+
+            if (ytPlayer && ytPlayerReady && typeof ytPlayer.pauseVideo === "function") {
+                ytPlayer.pauseVideo();
+            }
+
+            const disc = document.getElementById("big-vinyl-disc");
+            const arm = document.getElementById("vinyl-tonearm");
+            const mini = document.getElementById("mini-vinyl-btn");
+            const nowPlaying = document.getElementById("vinyl-now-playing");
+
+            if (disc) disc.classList.remove("spinning");
+            if (arm) arm.classList.remove("on-record");
+            if (mini) mini.classList.remove("playing");
+            if (updateUi) {
+                if (nowPlaying) nowPlaying.innerText = "Wähle einen Song für die Nadel...";
+                renderVinylTracklist();
             }
         }
 
