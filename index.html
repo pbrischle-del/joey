@@ -99,7 +99,7 @@
             }
         }
 
-        /* VAMPIR-BANNER BEI BLUTMOND */
+        /* VAMPIR-BANNER BEI BLUTMOND & MOND-FLÜSTERN */
         .bloodmoon-toast {
             position: fixed;
             top: 125px;
@@ -115,6 +115,44 @@
             max-width: 260px;
             box-shadow: 0 0 20px rgba(179, 0, 0, 0.7);
             animation: fadeIn 0.4s ease;
+        }
+
+        .moon-whisper-toast {
+            position: fixed;
+            top: 125px;
+            left: 40px;
+            z-index: 1001;
+            background-color: rgba(18, 8, 24, 0.92);
+            color: #fffdf0;
+            border: 1px solid rgba(255, 182, 193, 0.7);
+            padding: 11px 15px;
+            border-radius: 12px;
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            font-size: 0.84rem;
+            line-height: 1.4;
+            max-width: 270px;
+            box-shadow: 0 0 22px rgba(255, 253, 240, 0.35), 0 0 35px rgba(216, 112, 147, 0.35);
+            animation: fadeIn 0.4s ease;
+            pointer-events: none;
+        }
+
+        /* DEZENTER HINWEIS BEI KURZ-KLICK AUF EINEN PORTAL-STERN */
+        .star-hint-toast {
+            position: fixed;
+            z-index: 1002;
+            background-color: rgba(18, 0, 12, 0.92);
+            color: #ffb6c1;
+            border: 1px solid #d87093;
+            padding: 7px 12px;
+            border-radius: 12px;
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            font-size: 0.78rem;
+            white-space: nowrap;
+            box-shadow: 0 0 14px rgba(255, 182, 193, 0.45);
+            animation: fadeIn 0.25s ease;
+            pointer-events: none;
         }
 
         /* STERNE FUNKELN ANIMATION */
@@ -166,6 +204,24 @@
 
         .portal-star:active {
             transform: scale(1.8);
+        }
+
+        /* Kurzzeitiges helles Aufblitzen, wenn der Mond auf seine beiden Freunde hinweist */
+        .portal-star.beacon-flash {
+            animation: portalStarBeacon 0.8s infinite alternate ease-in-out !important;
+        }
+
+        @keyframes portalStarBeacon {
+            0% {
+                opacity: 0.85;
+                transform: scale(1.5);
+                box-shadow: 0 0 14px #ffffff, 0 0 28px #ffb6c1, 0 0 42px #ffffff;
+            }
+            100% {
+                opacity: 1;
+                transform: scale(2.4);
+                box-shadow: 0 0 20px #ffffff, 0 0 40px #ffb6c1, 0 0 65px #ffffff;
+            }
         }
 
         /* Linker Stern -> Heaven (dezent außen links, deutlich unterhalb des Mondes) */
@@ -1192,11 +1248,11 @@
                 top: 15px;
                 left: 15px;
             }
-            .bloodmoon-toast {
+            .bloodmoon-toast, .moon-whisper-toast {
                 top: 70px;
                 left: 15px;
-                max-width: 220px;
-                font-size: 0.8rem;
+                max-width: 225px;
+                font-size: 0.78rem;
             }
             /* Auf dem Handy: Linker Portal-Stern weiter unten auf Joeys Seite, rechter unten rechts */
             .heaven-star {
@@ -1214,7 +1270,7 @@
 
     <!-- NACHTMODUS EFFEKT & STERNENHIMMEL -->
     <div id="night-overlay">
-        <div class="moon" id="interactive-moon" title="Halte mich gedrückt..."></div>
+        <div class="moon" id="interactive-moon" title="Tippe mich an oder halte mich gedrückt..."></div>
         
         <!-- ZWEI BESONDERE PORTAL-STERNE (IMMER EINER LINKS, EINER RECHTS) -->
         <div class="portal-star heaven-star" id="heaven-portal-star" title="✦"></div>
@@ -1669,7 +1725,7 @@ Setting the darkness light
             },
             {
                 id: "nighttrain",
-                file: "07_Guns_N_Roses_Nightrain.mp3",
+                file: "07_Guns_N_Roses_Nighttrain.mp3",
                 title: "Nighttrain",
                 artist: "Guns N' Roses"
             },
@@ -1804,15 +1860,50 @@ Setting the darkness light
         }
 
         // LANGER KLICK AUF DIE PORTAL-STERNE (LINKS -> HEAVEN.HTML, RECHTS -> DARKNESS.HTML)
+        // + KURZ-KLICK HINWEIS: „Halte mich einen Moment länger fest…“
+        let starHintTimer = null;
+
+        function showPortalStarShortHint(starEl) {
+            const existingHint = document.querySelector(".star-hint-toast");
+            if (existingHint) existingHint.remove();
+            clearTimeout(starHintTimer);
+
+            const rect = starEl.getBoundingClientRect();
+            const hint = document.createElement("div");
+            hint.className = "star-hint-toast";
+            hint.innerText = "✦ Halte mich einen Moment länger fest…";
+
+            // Positioniert den Hinweis sauber neben dem jeweiligen Stern (links oder rechts)
+            hint.style.top = Math.max(16, rect.top - 12) + "px";
+            if (rect.left > window.innerWidth / 2) {
+                hint.style.right = Math.max(14, window.innerWidth - rect.left + 14) + "px";
+            } else {
+                hint.style.left = Math.max(14, rect.right + 14) + "px";
+            }
+
+            document.body.appendChild(hint);
+
+            starHintTimer = setTimeout(function() {
+                hint.remove();
+            }, 2600);
+        }
+
         function setupLongPressNavigation(elementId, targetUrl, secretMessage) {
             const el = document.getElementById(elementId);
             if (!el) return;
             let pressTimer = null;
+            let isPressing = false;
+            let longPressTriggered = false;
 
             function startPress(e) {
                 if (e.type === "touchstart") e.preventDefault();
                 clearTimeout(pressTimer);
+                isPressing = true;
+                longPressTriggered = false;
+
                 pressTimer = setTimeout(function() {
+                    longPressTriggered = true;
+                    isPressing = false;
                     // Sendet zuerst die Nachricht über Bot 2 und leitet danach weiter
                     const fallbackTimeout = new Promise(resolve => setTimeout(resolve, 350));
                     Promise.race([
@@ -1824,15 +1915,24 @@ Setting the darkness light
                 }, 700);
             }
 
+            function endPress() {
+                clearTimeout(pressTimer);
+                if (isPressing && !longPressTriggered) {
+                    showPortalStarShortHint(el);
+                }
+                isPressing = false;
+            }
+
             function cancelPress() {
                 clearTimeout(pressTimer);
+                isPressing = false;
             }
 
             el.addEventListener("mousedown", startPress);
-            el.addEventListener("mouseup", cancelPress);
+            el.addEventListener("mouseup", endPress);
             el.addEventListener("mouseleave", cancelPress);
             el.addEventListener("touchstart", startPress, { passive: false });
-            el.addEventListener("touchend", cancelPress);
+            el.addEventListener("touchend", endPress);
             el.addEventListener("touchcancel", cancelPress);
         }
 
@@ -1847,9 +1947,44 @@ Setting the darkness light
             "🖤🦇 SECRET ENTDECKT: Joey hat den rechten Portal-Stern gefunden und betritt gerade darkness.html!"
         );
 
-        // LANGER KLICK AUF DEN MOND IM NACHTMODUS (BLUTMOND ODER STERNSCHNUPPE)
+        // MOND IM NACHTMODUS:
+        // - KURZ-KLICK: Mond flüstert den Hinweis auf seine „zwei funkelnden Freunde“ + beide Portal-Sterne blitzen auf
+        // - LANGER KLICK: Blutmond oder Sternschnuppe
         const moonEl = document.getElementById("interactive-moon");
         let moonPressTimer = null;
+        let moonIsPressing = false;
+        let moonLongPressTriggered = false;
+        let moonWhisperTimer = null;
+        let starBeaconTimer = null;
+
+        function triggerMoonWhisper() {
+            const existingToast = document.querySelector(".bloodmoon-toast");
+            if (existingToast) existingToast.remove();
+            const existingWhisper = document.querySelector(".moon-whisper-toast");
+            if (existingWhisper) existingWhisper.remove();
+            clearTimeout(moonWhisperTimer);
+            clearTimeout(starBeaconTimer);
+
+            const whisper = document.createElement("div");
+            whisper.className = "moon-whisper-toast";
+            whisper.innerHTML = "🌙 <em>Der Mond flüstert:</em><br>„Ich wache nicht allein über diese Nacht… suche meine zwei funkelnden Freunde am Himmel und halte einen von ihnen kurz fest… ✨“";
+            document.body.appendChild(whisper);
+
+            // Beide Portal-Sterne gleichzeitig für 3,2 Sekunden hell aufblitzen lassen
+            const heavenStar = document.getElementById("heaven-portal-star");
+            const darknessStar = document.getElementById("darkness-portal-star");
+            if (heavenStar) heavenStar.classList.add("beacon-flash");
+            if (darknessStar) darknessStar.classList.add("beacon-flash");
+
+            starBeaconTimer = setTimeout(function() {
+                if (heavenStar) heavenStar.classList.remove("beacon-flash");
+                if (darknessStar) darknessStar.classList.remove("beacon-flash");
+            }, 3200);
+
+            moonWhisperTimer = setTimeout(function() {
+                whisper.remove();
+            }, 5500);
+        }
 
         function triggerMoonSecret() {
             const zufall = Math.random();
@@ -1861,6 +1996,8 @@ Setting the darkness light
 
                 const existingToast = document.querySelector(".bloodmoon-toast");
                 if (existingToast) existingToast.remove();
+                const existingWhisper = document.querySelector(".moon-whisper-toast");
+                if (existingWhisper) existingWhisper.remove();
 
                 const toast = document.createElement("div");
                 toast.className = "bloodmoon-toast";
@@ -1889,19 +2026,35 @@ Setting the darkness light
         function startMoonPress(e) {
             if (e.type === "touchstart") e.preventDefault();
             clearTimeout(moonPressTimer);
-            moonPressTimer = setTimeout(triggerMoonSecret, 700);
+            moonIsPressing = true;
+            moonLongPressTriggered = false;
+
+            moonPressTimer = setTimeout(function() {
+                moonLongPressTriggered = true;
+                moonIsPressing = false;
+                triggerMoonSecret();
+            }, 700);
+        }
+
+        function endMoonPress() {
+            clearTimeout(moonPressTimer);
+            if (moonIsPressing && !moonLongPressTriggered) {
+                triggerMoonWhisper();
+            }
+            moonIsPressing = false;
         }
 
         function cancelMoonPress() {
             clearTimeout(moonPressTimer);
+            moonIsPressing = false;
         }
 
         if (moonEl) {
             moonEl.addEventListener("mousedown", startMoonPress);
-            moonEl.addEventListener("mouseup", cancelMoonPress);
+            moonEl.addEventListener("mouseup", endMoonPress);
             moonEl.addEventListener("mouseleave", cancelMoonPress);
             moonEl.addEventListener("touchstart", startMoonPress, { passive: false });
-            moonEl.addEventListener("touchend", cancelMoonPress);
+            moonEl.addEventListener("touchend", endMoonPress);
             moonEl.addEventListener("touchcancel", cancelMoonPress);
         }
 
